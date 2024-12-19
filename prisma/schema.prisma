@@ -1,0 +1,395 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// criar uma migration: yarn prisma migrate dev
+
+model User {
+  id          String     @id @default(uuid())
+  name        String     @unique @db.VarChar(295)
+  slug_name   String     @db.VarChar(295)
+  image_user  String?
+  email       String     @unique @db.VarChar(180)
+  password    String
+  status      StatusUser @default(Disponivel)
+  role        RoleUser   @default(SUPER_ADMIN)
+  last_access DateTime?  @db.Timestamptz(3)
+
+  post             Post[]
+  notificationUser NotificationUser[]
+
+  created_at DateTime @default(now()) @db.Timestamptz(3)
+  updated_at DateTime @updatedAt
+
+  @@map("users")
+}
+
+enum RoleUser {
+  SUPER_ADMIN
+  EMPLOYEE
+  ADMIN
+}
+
+enum StatusUser {
+  Disponivel
+  Indisponivel
+}
+
+model UserBlog {
+  id          String         @id @default(uuid()) @db.Uuid
+  name        String         @unique @db.VarChar(295)
+  slug_name   String         @db.VarChar(295)
+  image_user  String?
+  email       String         @unique @db.VarChar(180)
+  password    String
+  status      StatusUserBlog @default(Disponivel)
+  newsletter  Boolean        @default(false)
+  last_access DateTime?      @db.Timestamptz(3)
+
+  notificationUserBlog NotificationUserBlog[]
+  comment              Comment[]
+
+  created_at DateTime @default(now()) @db.Timestamptz(3)
+  updated_at DateTime @updatedAt
+
+  @@map("userblogs")
+}
+
+enum StatusUserBlog {
+  Disponivel
+  Indisponivel
+}
+
+model PasswordRecoveryUser {
+  id    String @id @default(uuid())
+  email String
+
+  @@map("passwordrecoveryusers")
+}
+
+model ConfigurationBlog {
+  id               String  @id @default(uuid())
+  name_blog        String? @db.VarChar(725)
+  email_blog       String? @db.VarChar(725)
+  phone            String? @db.VarChar(725)
+  logo             String?
+  description_blog String? @db.VarChar(15725)
+
+  created_at DateTime @default(now()) @db.Timestamptz(3)
+  updated_at DateTime @updatedAt
+
+  @@map("configurationsblog")
+}
+
+model Sitemap {
+  id             String  @id @default(uuid())
+  post           Post?   @relation(fields: [post_id], references: [id])
+  post_id        String? @unique @db.Uuid
+  custom_url_map String  @unique
+  priority       Float   @default(0.5)
+  changefreq     String  @default("weekly")
+  is_indexed     Boolean @default(true)
+
+  created_at DateTime @default(now()) @db.Timestamptz(3)
+  updated_at DateTime @updatedAt
+
+  @@map("sitemaps")
+}
+
+model Category {
+  id                 String           @id @default(uuid())
+  name_category      String           @unique
+  slug_name_category String           @db.VarChar(300)
+  image_category     String?
+  description        String?          @db.VarChar(15725)
+  status             StatusCategory   @default(Disponivel)
+  order              Int              @default(0)
+  parentId           String?
+  parent             Category?        @relation("Subcategories", fields: [parentId], references: [id])
+  children           Category[]       @relation("Subcategories")
+  posts              CategoryOnPost[]
+
+  created_at DateTime @default(now()) @db.Timestamptz(3)
+  updated_at DateTime @updatedAt
+
+  @@map("categories")
+}
+
+enum StatusCategory {
+  Disponivel
+  Indisponivel
+}
+
+model Tag {
+  id            String      @id @default(uuid())
+  tag_name      String      @unique
+  slug_tag_name String
+  posts         TagOnPost[]
+
+  created_at DateTime @default(now()) @db.Timestamptz(3)
+  updated_at DateTime @updatedAt
+
+  @@map("tags")
+}
+
+model Post {
+  id              String     @id @default(uuid()) @db.Uuid
+  user            User       @relation(fields: [author], references: [name])
+  author          String
+  title           String     @db.VarChar(395)
+  slug_title_post String
+  text_post       String
+  image_post      String?
+  status          StatusPost @default(Disponivel)
+  publish_at      DateTime?
+  post_like       Int?       @default(0)
+  post_dislike    Int?       @default(0)
+  views           Int?       @default(0)
+  seo_description String?    @db.VarChar(300)
+  seo_keywords    String?    @db.VarChar(500)
+  custom_url      String?    @unique
+
+  tags       TagOnPost[]
+  categories CategoryOnPost[]
+  comment    Comment[]
+  postLike   PostLike[]
+  postView   PostView[]
+  sitemap    Sitemap?
+
+  created_at DateTime @default(now()) @db.Timestamptz(3)
+  updated_at DateTime @updatedAt
+
+  @@map("posts")
+}
+
+enum StatusPost {
+  Programado
+  Disponivel
+  Indisponivel
+}
+
+model PostLike {
+  id        String  @id @default(uuid()) @db.Uuid
+  post      Post    @relation(fields: [post_id], references: [id], onDelete: Cascade)
+  post_id   String  @db.Uuid
+  ipAddress String? @db.VarChar(45)
+  isLike    Boolean
+
+  created_at DateTime @default(now()) @db.Timestamptz(3)
+
+  @@map("postlikes")
+}
+
+model PostView {
+  id        String  @id @default(uuid()) @db.Uuid
+  post      Post?   @relation(fields: [post_id], references: [id], onDelete: SetNull)
+  post_id   String? @db.Uuid
+  ipAddress String? @db.VarChar(45)
+
+  created_at DateTime @default(now()) @db.Timestamptz(3)
+
+  @@unique([post_id, ipAddress])
+  @@map("postviews")
+}
+
+model CategoryOnPost {
+  id          String   @id @default(uuid()) @db.Uuid
+  post        Post     @relation(fields: [post_id], references: [id], onDelete: Cascade)
+  post_id     String   @db.Uuid
+  category    Category @relation(fields: [category_id], references: [id])
+  category_id String
+
+  @@unique([post_id, category_id])
+  @@map("category_on_posts")
+}
+
+model TagOnPost {
+  id      String @id @default(uuid()) @db.Uuid
+  post    Post   @relation(fields: [post_id], references: [id], onDelete: Cascade)
+  post_id String @db.Uuid
+  tag     Tag    @relation(fields: [tag_id], references: [id])
+  tag_id  String
+
+  @@unique([post_id, tag_id])
+  @@map("tag_on_posts")
+}
+
+model Comment {
+  id          String    @id @default(uuid()) @db.Uuid
+  post        Post      @relation(fields: [post_id], references: [id], onDelete: Cascade)
+  post_id     String    @db.Uuid
+  userBlog    UserBlog? @relation(fields: [userBlog_id], references: [id], onDelete: SetNull)
+  userBlog_id String?   @db.Uuid
+  comment     String    @db.VarChar(5000)
+  status      String    @default("Pendente")
+  nivel       Int?
+  parent      Comment?  @relation("ReplyToComment", fields: [parentId], references: [id])
+  parentId    String?   @db.Uuid
+  replies     Comment[] @relation("ReplyToComment")
+
+  comment_like    Int @default(0)
+  comment_dislike Int @default(0)
+
+  commentLikes CommentLike[]
+
+  created_at DateTime? @default(now()) @db.Timestamptz(3)
+  updated_at DateTime? @updatedAt
+
+  @@map("comments")
+}
+
+model CommentLike {
+  id         String  @id @default(uuid()) @db.Uuid
+  comment    Comment @relation(fields: [comment_id], references: [id], onDelete: Cascade)
+  comment_id String  @db.Uuid
+  ipAddress  String? @db.VarChar(45)
+  isLike     Boolean
+
+  created_at DateTime? @default(now()) @db.Timestamptz(3)
+
+  @@map("commentlikes")
+}
+
+model Form_contact {
+  id             String @id @default(uuid())
+  name_user      String @db.VarChar(200)
+  slug_name_user String
+  email_user     String @db.VarChar(200)
+  subject        String @db.VarChar(250)
+  menssage       String @db.VarChar(5000)
+
+  created_at DateTime? @default(now()) @db.Timestamptz(3)
+  updated_at DateTime? @updatedAt
+
+  @@map("form_contacts")
+}
+
+model Newsletter {
+  id         String @id @default(uuid())
+  name_user  String @db.VarChar(100)
+  email_user String @db.VarChar(100)
+
+  created_at DateTime? @default(now()) @db.Timestamptz(3)
+  updated_at DateTime? @updatedAt
+
+  @@map("newsletters")
+}
+
+model NotificationUser {
+  id      String  @id @default(uuid())
+  user    User?   @relation(fields: [user_id], references: [id])
+  user_id String?
+  type    String
+  message String  @db.VarChar(500)
+  read    Boolean @default(false)
+
+  created_at DateTime  @default(now()) @db.Timestamptz(3)
+  updated_at DateTime? @updatedAt
+
+  @@map("notificationusers")
+}
+
+model NotificationUserBlog {
+  id          String    @id @default(uuid())
+  userBlog    UserBlog? @relation(fields: [userBlog_id], references: [id])
+  userBlog_id String?   @db.Uuid
+  type        String
+  message     String    @db.VarChar(500)
+  read        Boolean   @default(false)
+
+  created_at DateTime  @default(now()) @db.Timestamptz(3)
+  updated_at DateTime? @updatedAt
+
+  @@map("notificationuserblogs")
+}
+
+model ConfigurationMarketingType {
+  id          String  @id @default(uuid())
+  name        String  @unique
+  description String?
+
+  configurationMarketingConfiguration ConfigurationMarketingConfiguration[]
+  ConfigurationMarketingOnPublication ConfigurationMarketingOnPublication[]
+
+  created_at DateTime @default(now()) @db.Timestamptz(3)
+  updated_at DateTime @updatedAt
+
+  @@map("configurationmarketingtypes")
+}
+
+model ConfigurationMarketingConfiguration {
+  id                            String                     @id @default(uuid())
+  value                         String
+  description_value             String?
+  configurationMarketingType    ConfigurationMarketingType @relation(fields: [configurationMarketingType_id], references: [id], onDelete: Cascade)
+  configurationMarketingType_id String
+
+  created_at DateTime @default(now()) @db.Timestamptz(3)
+  updated_at DateTime @updatedAt
+
+  @@map("configurationmarketingconfigurations")
+}
+
+model MarketingPublication {
+  id               String                     @id @default(uuid()) @db.Uuid
+  title            String?                    @db.VarChar(555)
+  description      String?                    @db.VarChar(7000)
+  image_url        String?                    @db.VarChar(4083)
+  redirect_url     String?                    @db.VarChar(5083)
+  clicks           Int?                       @default(0)
+  status           StatusMarketingPublication @default(Disponivel)
+  publish_at_start DateTime?
+  publish_at_end   DateTime?
+  is_processing    Boolean                    @default(false)
+  is_completed     Boolean                    @default(false)
+  email_sent       Boolean                    @default(false)
+  is_popup         Boolean                    @default(false)
+
+  marketingPublicationView            MarketingPublicationView[]
+  configurationMarketingOnPublication ConfigurationMarketingOnPublication[]
+
+  created_at DateTime  @default(now()) @db.Timestamptz(3)
+  updated_at DateTime? @updatedAt
+
+  @@map("marketingpublications")
+}
+
+enum StatusMarketingPublication {
+  Programado
+  Fim_da_programacao
+  Disponivel
+  Indisponivel
+}
+
+model MarketingPublicationView {
+  id                      String                @id @default(uuid()) @db.Uuid
+  marketingPublication    MarketingPublication? @relation(fields: [marketingPublication_id], references: [id], onDelete: SetNull)
+  marketingPublication_id String?               @db.Uuid
+  local_site              String?
+  ipAddress               String?               @db.VarChar(45)
+
+  created_at DateTime @default(now()) @db.Timestamptz(3)
+
+  @@unique([marketingPublication_id, ipAddress])
+  @@map("marketingpublicationviews")
+}
+
+model ConfigurationMarketingOnPublication {
+  id                            String                     @id @default(uuid()) @db.Uuid
+  marketingPublication          MarketingPublication       @relation(fields: [marketingPublication_id], references: [id], onDelete: Cascade)
+  marketingPublication_id       String                     @db.Uuid
+  configurationMarketingType    ConfigurationMarketingType @relation(fields: [configurationMarketingType_id], references: [id])
+  configurationMarketingType_id String
+
+  @@unique([marketingPublication_id, configurationMarketingType_id])
+  @@map("configurationsmarketingonpublications")
+}
