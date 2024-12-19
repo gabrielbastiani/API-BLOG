@@ -10,10 +10,14 @@ interface PostRequest {
     publish_at?: Date;
     tags?: string[];
     categories?: string[];
+    seo_description?: string;
+    seo_keywords?: any;
+    custom_url?: string;
 }
 
 class PostCreateService {
-    async execute({ author, title, image_post, text_post, status, publish_at, tags, categories }: PostRequest) {
+    async execute({ author, title, image_post, text_post, status, publish_at, tags, categories, seo_description, seo_keywords, custom_url }: PostRequest) {
+        
         function removerAcentos(s: string): string {
             return s
                 .normalize("NFD")
@@ -28,6 +32,8 @@ class PostCreateService {
             ? (status as StatusPost)
             : StatusPost.Disponivel;
 
+        const keywords = Array.isArray(seo_keywords) ? seo_keywords : JSON.parse(seo_keywords);
+
         const post = await prismaClient.post.create({
             data: {
                 author,
@@ -37,6 +43,9 @@ class PostCreateService {
                 text_post,
                 status: statusEnum,
                 publish_at,
+                seo_description,
+                seo_keywords: keywords,
+                custom_url: removerAcentos(custom_url)
             },
         });
 

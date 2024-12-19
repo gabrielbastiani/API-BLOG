@@ -4,10 +4,11 @@ import { PostCreateService } from "../../services/post/PostCreateService";
 class PostCreateController {
   async handle(req: Request, res: Response) {
     try {
-      const { author, title, text_post, publish_at, status } = req.body;
+      const { author, title, text_post, publish_at, status, seo_description, custom_url } = req.body;
 
       const tags = req.body.tags ? JSON.parse(req.body.tags) : [];
       const categories = req.body.categories ? JSON.parse(req.body.categories) : [];
+      const seo_keywords = req.body.seo_keywords ? JSON.parse(req.body.seo_keywords) : [];
 
       let imageToUpdate = req.body.image_post;
       if (!req.body.image_post && req.file) {
@@ -25,6 +26,9 @@ class PostCreateController {
         publish_at: publish_at ? new Date(publish_at) : undefined,
         tags,
         categories,
+        seo_description,
+        seo_keywords,
+        custom_url
       });
 
       return res.status(201).json(post);

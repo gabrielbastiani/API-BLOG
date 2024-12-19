@@ -6,6 +6,7 @@ import { isAuthenticated } from "./middlewares/isAuthenticated";
 // -- ROUTES CONFIGURATION BLOG --
 import { CreateConfigurationBlogController } from "./controllers/configuration_blog/CreateConfigurationBlogController";
 import { GetConfigurationsBlogController } from "./controllers/configuration_blog/GetConfigurationsBlogController";
+import { UpdateConfigurationBlogController } from "./controllers/configuration_blog/UpdateConfigurationBlogController";
 
 // -- ROUTES USERS --
 import { UserCreateController } from "./controllers/user/UserCreateController";
@@ -135,6 +136,7 @@ const temp_file = multer(uploadConfig.upload("./temp_file"));
 // -- ROUTES CONFIGURATION BLOG --
 router.post('/configuration_blog/create', upload_image.single('file'), new CreateConfigurationBlogController().handle);
 router.get('/configuration_blog/get_configs', new GetConfigurationsBlogController().handle);
+router.put('/configuration_blog/update', isAuthenticated, upload_image.single('file'), new UpdateConfigurationBlogController().handle);
 
 // -- ROUTES USERS --
 router.post('/user/create', upload_image.single('file'), new UserCreateController().handle);

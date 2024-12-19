@@ -12,6 +12,9 @@ class PostUpdateDataController {
             publish_at,
             categories,
             tags,
+            seo_description,
+            seo_keywords,
+            custom_url
         } = req.body;
 
         const updatePostService = new PostUpdateDataService();
@@ -32,6 +35,9 @@ class PostUpdateDataController {
                 publish_at,
                 categories: categories ? JSON.parse(categories) : undefined,
                 tags: tags ? JSON.parse(tags) : undefined,
+                seo_description,
+                seo_keywords: seo_keywords ? JSON.parse(seo_keywords) : undefined,
+                custom_url
             });
 
             return res.json(post);

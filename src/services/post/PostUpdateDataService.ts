@@ -13,11 +13,14 @@ interface PostProps {
     publish_at?: Date;
     categories?: string[];
     tags?: string[];
+    seo_description?: string;
+    seo_keywords?: any;
+    custom_url?: string;
 }
 
 class PostUpdateDataService {
-    async execute({ post_id, author, title, text_post, image_post, status, publish_at, categories, tags }: PostProps) {
-
+    async execute({ post_id, author, title, text_post, image_post, status, publish_at, categories, tags, seo_description, seo_keywords, custom_url }: PostProps) {
+        
         function removerAcentos(s: any) {
             return s.normalize('NFD')
                 .replace(/[\u0300-\u036f]/g, "")
@@ -32,6 +35,19 @@ class PostUpdateDataService {
         });
 
         const dataToUpdate: any = {};
+
+        if (seo_keywords) {
+            const keywords = Array.isArray(seo_keywords) ? seo_keywords : JSON.parse(seo_keywords);
+            dataToUpdate.seo_keywords = keywords;
+        }
+
+        if (seo_description) {
+            dataToUpdate.seo_description = seo_description;
+        }
+
+        if (custom_url) {
+            dataToUpdate.custom_url = removerAcentos(custom_url);
+        }
 
         if (author) {
             dataToUpdate.author = author;

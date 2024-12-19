@@ -4,7 +4,7 @@ import { CreateConfigurationBlogService } from '../../services/configuration_blo
 class CreateConfigurationBlogController {
     async handle(req: Request, res: Response) {
         const {
-            name_blog, email_blog, logo, phone, description_blog
+            name_blog, email_blog, logo
         } = req.body;
 
         const create_configuration = new CreateConfigurationBlogService();
@@ -16,10 +16,8 @@ class CreateConfigurationBlogController {
 
         const configuration = await create_configuration.execute({
             name_blog,
-            description_blog,
             logo: imageToUpdate,
-            email_blog,
-            phone
+            email_blog
         });
 
         return res.json(configuration);

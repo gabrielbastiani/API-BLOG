@@ -142,7 +142,7 @@ model Post {
   post_dislike    Int?       @default(0)
   views           Int?       @default(0)
   seo_description String?    @db.VarChar(300)
-  seo_keywords    String?    @db.VarChar(500)
+  seo_keywords    Json?
   custom_url      String?    @unique
 
   tags       TagOnPost[]

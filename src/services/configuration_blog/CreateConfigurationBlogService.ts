@@ -4,20 +4,20 @@ interface ConfigBlog {
     name_blog: string;
     email_blog: string;
     logo: string;
-    phone?: string;
-    description_blog?: string;
 }
 
 class CreateConfigurationBlogService {
-    async execute({ name_blog, email_blog, logo, phone, description_blog }: ConfigBlog) {
+    async execute({ name_blog, email_blog, logo }: ConfigBlog) {
 
         const config = await prismaClient.configurationBlog.create({
             data: {
                 name_blog: name_blog,
                 email_blog: email_blog,
                 logo: logo,
-                phone: phone,
-                description_blog: description_blog
+                phone: "(99) 99999-9999",
+                description_blog: "Escreva uma descrição para o blog, do que se trata...",
+                author_blog: "Nome do(a) dono(a) do blog",
+                about_author_blog: "Sobre o autor do blog"
             }
         })
 
