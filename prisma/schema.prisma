@@ -77,32 +77,19 @@ model PasswordRecoveryUser {
 }
 
 model ConfigurationBlog {
-  id               String  @id @default(uuid())
-  name_blog        String? @db.VarChar(725)
-  email_blog       String? @db.VarChar(725)
-  phone            String? @db.VarChar(725)
-  logo             String?
-  description_blog String? @db.VarChar(15725)
+  id                String  @id @default(uuid())
+  name_blog         String? @db.VarChar(725)
+  email_blog        String? @db.VarChar(725)
+  phone             String? @db.VarChar(725)
+  logo              String?
+  description_blog  String? @db.VarChar(15725)
+  author_blog       String? @db.VarChar(225)
+  about_author_blog String?
 
   created_at DateTime @default(now()) @db.Timestamptz(3)
   updated_at DateTime @updatedAt
 
   @@map("configurationsblog")
-}
-
-model Sitemap {
-  id             String  @id @default(uuid())
-  post           Post?   @relation(fields: [post_id], references: [id])
-  post_id        String? @unique @db.Uuid
-  custom_url_map String  @unique
-  priority       Float   @default(0.5)
-  changefreq     String  @default("weekly")
-  is_indexed     Boolean @default(true)
-
-  created_at DateTime @default(now()) @db.Timestamptz(3)
-  updated_at DateTime @updatedAt
-
-  @@map("sitemaps")
 }
 
 model Category {
@@ -163,7 +150,6 @@ model Post {
   comment    Comment[]
   postLike   PostLike[]
   postView   PostView[]
-  sitemap    Sitemap?
 
   created_at DateTime @default(now()) @db.Timestamptz(3)
   updated_at DateTime @updatedAt
@@ -329,7 +315,6 @@ model ConfigurationMarketingType {
 model ConfigurationMarketingConfiguration {
   id                            String                     @id @default(uuid())
   value                         String
-  description_value             String?
   configurationMarketingType    ConfigurationMarketingType @relation(fields: [configurationMarketingType_id], references: [id], onDelete: Cascade)
   configurationMarketingType_id String
 

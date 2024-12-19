@@ -66,24 +66,12 @@ CREATE TABLE "configurationsblog" (
     "phone" VARCHAR(725),
     "logo" TEXT,
     "description_blog" VARCHAR(15725),
+    "author_blog" VARCHAR(225),
+    "about_author_blog" TEXT,
     "created_at" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "configurationsblog_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "sitemaps" (
-    "id" TEXT NOT NULL,
-    "post_id" UUID,
-    "custom_url_map" TEXT NOT NULL,
-    "priority" DOUBLE PRECISION NOT NULL DEFAULT 0.5,
-    "changefreq" TEXT NOT NULL DEFAULT 'weekly',
-    "is_indexed" BOOLEAN NOT NULL DEFAULT true,
-    "created_at" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "sitemaps_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -268,7 +256,6 @@ CREATE TABLE "configurationmarketingtypes" (
 CREATE TABLE "configurationmarketingconfigurations" (
     "id" TEXT NOT NULL,
     "value" TEXT NOT NULL,
-    "description" TEXT,
     "configurationMarketingType_id" TEXT NOT NULL,
     "created_at" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
@@ -312,7 +299,7 @@ CREATE TABLE "marketingpublicationviews" (
 CREATE TABLE "configurationsmarketingonpublications" (
     "id" UUID NOT NULL,
     "marketingPublication_id" UUID NOT NULL,
-    "configurationMarketingConfiguration_id" TEXT NOT NULL,
+    "configurationMarketingType_id" TEXT NOT NULL,
 
     CONSTRAINT "configurationsmarketingonpublications_pkey" PRIMARY KEY ("id")
 );
@@ -328,12 +315,6 @@ CREATE UNIQUE INDEX "userblogs_name_key" ON "userblogs"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "userblogs_email_key" ON "userblogs"("email");
-
--- CreateIndex
-CREATE UNIQUE INDEX "sitemaps_post_id_key" ON "sitemaps"("post_id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "sitemaps_custom_url_map_key" ON "sitemaps"("custom_url_map");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "categories_name_category_key" ON "categories"("name_category");
@@ -360,10 +341,7 @@ CREATE UNIQUE INDEX "configurationmarketingtypes_name_key" ON "configurationmark
 CREATE UNIQUE INDEX "marketingpublicationviews_marketingPublication_id_ipAddress_key" ON "marketingpublicationviews"("marketingPublication_id", "ipAddress");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "configurationsmarketingonpublications_marketingPublication__key" ON "configurationsmarketingonpublications"("marketingPublication_id", "configurationMarketingConfiguration_id");
-
--- AddForeignKey
-ALTER TABLE "sitemaps" ADD CONSTRAINT "sitemaps_post_id_fkey" FOREIGN KEY ("post_id") REFERENCES "posts"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+CREATE UNIQUE INDEX "configurationsmarketingonpublications_marketingPublication__key" ON "configurationsmarketingonpublications"("marketingPublication_id", "configurationMarketingType_id");
 
 -- AddForeignKey
 ALTER TABLE "categories" ADD CONSTRAINT "categories_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "categories"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -417,4 +395,4 @@ ALTER TABLE "marketingpublicationviews" ADD CONSTRAINT "marketingpublicationview
 ALTER TABLE "configurationsmarketingonpublications" ADD CONSTRAINT "configurationsmarketingonpublications_marketingPublication_fkey" FOREIGN KEY ("marketingPublication_id") REFERENCES "marketingpublications"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "configurationsmarketingonpublications" ADD CONSTRAINT "configurationsmarketingonpublications_configurationMarketi_fkey" FOREIGN KEY ("configurationMarketingConfiguration_id") REFERENCES "configurationmarketingconfigurations"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "configurationsmarketingonpublications" ADD CONSTRAINT "configurationsmarketingonpublications_configurationMarketi_fkey" FOREIGN KEY ("configurationMarketingType_id") REFERENCES "configurationmarketingtypes"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

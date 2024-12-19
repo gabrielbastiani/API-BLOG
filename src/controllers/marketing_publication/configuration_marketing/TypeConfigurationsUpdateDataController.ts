@@ -9,8 +9,7 @@ class TypeConfigurationsUpdateDataController {
             name,
             description,
             configurationMarketingConfiguration_id,
-            value,
-            description_value
+            value
         } = req.body;
 
         const update_configurations = new TypeConfigurationsUpdateDataService();
@@ -18,7 +17,6 @@ class TypeConfigurationsUpdateDataController {
         const configurations = await update_configurations.execute({
             configurationMarketingType_id,
             configurationMarketingConfiguration_id,
-            description_value,
             value,
             name,
             description

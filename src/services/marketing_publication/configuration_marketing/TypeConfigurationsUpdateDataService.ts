@@ -6,7 +6,6 @@ interface ConfigsProps {
     description?: string;
     value?: string;
     configurationMarketingConfiguration_id?: string;
-    description_value?: string;
 }
 
 class TypeConfigurationsUpdateDataService {
@@ -15,8 +14,7 @@ class TypeConfigurationsUpdateDataService {
         name,
         description,
         value,
-        configurationMarketingConfiguration_id,
-        description_value
+        configurationMarketingConfiguration_id
     }: ConfigsProps) {
 
         const dataToUpdate: any = {};
@@ -36,19 +34,6 @@ class TypeConfigurationsUpdateDataService {
                 },
                 data: {
                     value: value
-                }
-            });
-
-            return update_configs;
-        }
-
-        if (description_value) {
-            const update_configs = await prismaClient.configurationMarketingConfiguration.update({
-                where: {
-                    id: configurationMarketingConfiguration_id
-                },
-                data: {
-                    description_value : description_value 
                 }
             });
 
