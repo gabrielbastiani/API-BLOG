@@ -126,6 +126,7 @@ import { TypeConfigurationsUpdateDataController } from "./controllers/marketing_
 import { TypeConfigurationMarketingDeleteController } from "./controllers/marketing_publication/configuration_marketing/TypeConfigurationMarketingDeleteController";
 import { CreateConfigurationMarketingController } from "./controllers/marketing_publication/configuration_marketing/CreateConfigurationMarketingController";
 import { AllConfigurationMarketingController } from "./controllers/marketing_publication/configuration_marketing/AllConfigurationMarketingController";
+import { UserBlogDetailController } from "./controllers/user/user_blog/UserBlogDetailController";
 
 
 const router = Router();
@@ -228,6 +229,7 @@ router.put('/tag/update', isAuthenticated, new UpdateTagController().handle);
 // -- ROUTES BLOG --
 router.post('/user/user_blog/create', upload_image.single('file'), new UserBlogCreateController().handle);
 router.post('/user/user_blog/session', new UserBlogAuthController().handle);
+router.get('/user/user_blog/me', isAuthenticated, new UserBlogDetailController().handle);
 router.get('/user/user_blog/all_users_blog', isAuthenticated, new AllUserBlogController().handle);
 router.put('/user/user_blog/update', isAuthenticated, upload_image.single('file'), new UserBlogUpdateDataController().handle);
 router.get('/user/user_blog/download_excel_delete_users_blog', isAuthenticated, new GenerateExcelDeleteUserBlogController().handle);
