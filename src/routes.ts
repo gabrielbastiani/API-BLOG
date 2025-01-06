@@ -103,6 +103,8 @@ import { UserBlogUpdateDataController } from "./controllers/user/user_blog/UserB
 import { GenerateExcelDeleteUserBlogController } from "./controllers/user/user_blog/GenerateExcelDeleteUserBlogController";
 import { BulkDeleteUsersBlogController } from "./controllers/user/user_blog/BulkDeleteUsersBlogController";
 import { UserBlogDeleteController } from "./controllers/user/user_blog/UserBlogDeleteController";
+import { RequestPasswordUserBlogRecoveryController } from "./controllers/user/user_blog/RequestPasswordUserBlogRecoveryController";
+import { PasswordRecoveryUserBlogController } from "./controllers/user/user_blog/PasswordRecoveryUserBlogController";
 
 // -- ROUTES DASHBOARD --
 import { GetPostStatisticsController } from "./controllers/dashboard/GetPostStatisticsController";
@@ -235,6 +237,8 @@ router.put('/user/user_blog/update', isAuthenticated, upload_image.single('file'
 router.get('/user/user_blog/download_excel_delete_users_blog', isAuthenticated, new GenerateExcelDeleteUserBlogController().handle);
 router.post('/user/user_blog/bulk_delete_users_blog', isAuthenticated, temp_file.single('file'), new BulkDeleteUsersBlogController().handle);
 router.delete('/user/user_blog/delete_user_blog', isAuthenticated, new UserBlogDeleteController().handle);
+router.post('/user/user_blog/email_recovery_password', new RequestPasswordUserBlogRecoveryController().handle);
+router.put('/user/user_blog/recovery_password_user_blog', new PasswordRecoveryUserBlogController().handle);
 
 // -- ROUTES DASHBOARD --
 router.get('/dashboard/posts/statistics', isAuthenticated, new GetPostStatisticsController().handle);
