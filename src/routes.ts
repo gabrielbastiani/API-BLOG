@@ -30,6 +30,7 @@ import { CategoryDeleteController } from "./controllers/category/CategoryDeleteC
 import { CategoriesController } from "./controllers/category/CategoriesController";
 import { GenerateExcelCategoryController } from "./controllers/category/GenerateExcelCategoryController";
 import { BulkCategoryImportController } from "./controllers/category/BulkCategoryImportController";
+import { CategoriesBlogController } from "./controllers/category/CategoriesBlogController";
 
 // -- ROUTES POST --
 import { PostCreateController } from "./controllers/post/PostCreateController";
@@ -105,6 +106,7 @@ import { BulkDeleteUsersBlogController } from "./controllers/user/user_blog/Bulk
 import { UserBlogDeleteController } from "./controllers/user/user_blog/UserBlogDeleteController";
 import { RequestPasswordUserBlogRecoveryController } from "./controllers/user/user_blog/RequestPasswordUserBlogRecoveryController";
 import { PasswordRecoveryUserBlogController } from "./controllers/user/user_blog/PasswordRecoveryUserBlogController";
+import { UserBlogDetailController } from "./controllers/user/user_blog/UserBlogDetailController";
 
 // -- ROUTES DASHBOARD --
 import { GetPostStatisticsController } from "./controllers/dashboard/GetPostStatisticsController";
@@ -128,7 +130,6 @@ import { TypeConfigurationsUpdateDataController } from "./controllers/marketing_
 import { TypeConfigurationMarketingDeleteController } from "./controllers/marketing_publication/configuration_marketing/TypeConfigurationMarketingDeleteController";
 import { CreateConfigurationMarketingController } from "./controllers/marketing_publication/configuration_marketing/CreateConfigurationMarketingController";
 import { AllConfigurationMarketingController } from "./controllers/marketing_publication/configuration_marketing/AllConfigurationMarketingController";
-import { UserBlogDetailController } from "./controllers/user/user_blog/UserBlogDetailController";
 
 
 const router = Router();
@@ -171,6 +172,7 @@ router.get('/category/donwload_excel_categories', isAuthenticated, new GenerateE
 router.post('/category/bulk_categories', isAuthenticated, temp_file.single("file"), new BulkCategoryImportController().handle);
 router.post('/category/bulk_delete_category', isAuthenticated, temp_file.single('file'), new BulkDeleteCategoryController().handle);
 router.get('/category/download_excel_delete_category', isAuthenticated, new GenerateExcelDeleteCategoryController().handle);
+router.get('/categories/blog/posts', new CategoriesBlogController().handle);
 
 // -- ROUTES POST --
 router.post('/post/create_post', isAuthenticated, upload_image.single('file'), new PostCreateController().handle);
