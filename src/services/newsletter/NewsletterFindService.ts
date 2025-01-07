@@ -19,7 +19,6 @@ class NewsletterFindService {
             ...(
                 search ? {
                     OR: [
-                        { name_user: { contains: search, mode: Prisma.QueryMode.insensitive } },
                         { email_user: { contains: search, mode: Prisma.QueryMode.insensitive } },
                     ]
                 } : {}

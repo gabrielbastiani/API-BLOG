@@ -261,7 +261,6 @@ model Form_contact {
 
 model Newsletter {
   id         String @id @default(uuid())
-  name_user  String @db.VarChar(100)
   email_user String @db.VarChar(100)
 
   created_at DateTime? @default(now()) @db.Timestamptz(3)

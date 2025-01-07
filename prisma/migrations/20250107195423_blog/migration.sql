@@ -115,7 +115,7 @@ CREATE TABLE "posts" (
     "post_dislike" INTEGER DEFAULT 0,
     "views" INTEGER DEFAULT 0,
     "seo_description" VARCHAR(300),
-    "seo_keywords" VARCHAR(500),
+    "seo_keywords" JSONB,
     "custom_url" TEXT,
     "created_at" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
@@ -207,7 +207,6 @@ CREATE TABLE "form_contacts" (
 -- CreateTable
 CREATE TABLE "newsletters" (
     "id" TEXT NOT NULL,
-    "name_user" VARCHAR(100) NOT NULL,
     "email_user" VARCHAR(100) NOT NULL,
     "created_at" TIMESTAMPTZ(3) DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3),

@@ -63,7 +63,6 @@ class UserBlogCreateService {
         if (newsletterBool === true) {
             await prismaClient.newsletter.create({
                 data: {
-                    name_user: name,
                     email_user: email
                 }
             });
