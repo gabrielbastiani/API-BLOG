@@ -351,6 +351,7 @@ enum StatusMarketingPublication {
   Programado
   Fim_da_programacao
   Disponivel
+  Disponivel_programado
   Indisponivel
 }
 

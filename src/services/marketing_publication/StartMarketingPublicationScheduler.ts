@@ -40,7 +40,7 @@ class StartMarketingPublicationScheduler {
                     where: { id: pub.id },
                     data: {
                         is_processing: true,
-                        status: "Disponivel",
+                        status: "Disponivel_programado",
                     },
                 });
 

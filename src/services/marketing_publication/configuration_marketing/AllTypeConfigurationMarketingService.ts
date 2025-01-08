@@ -45,6 +45,12 @@ class AllTypeConfigurationMarketingService {
             }
         });
 
+        const all = await prismaClient.configurationMarketingType.findMany({
+            include: {
+                configurationMarketingConfiguration: true
+            }
+        });
+
         const total_publications = await prismaClient.configurationMarketingType.count({
             where: whereClause,
         });
@@ -67,6 +73,7 @@ class AllTypeConfigurationMarketingService {
         return {
             unique_type_configuration: configurationMarketing,
             configurations: all_configurations,
+            all: all,
             currentPage: page,
             totalPages: Math.ceil(total_publications / limit),
             totalPublications: total_publications

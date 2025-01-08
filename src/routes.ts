@@ -43,6 +43,7 @@ import { GenerateExcelPostsController } from "./controllers/post/GenerateExcelPo
 import { BulkPostsImportController } from "./controllers/post/BulkPostsImportController";
 import { PostLikeController } from "./controllers/post/PostLikeController";
 import { UpdateViewsController } from "./controllers/post/UpdateViewsController";
+import { SearchBlogPostController } from "./controllers/post/SearchBlogPostController";
 
 // -- ROUTES POST CATEGORY --
 import { PostCategoryCreateController } from "./controllers/post_category/PostCategoryCreateController";
@@ -185,6 +186,7 @@ router.get('/post/donwload_excel_posts', isAuthenticated, new GenerateExcelPosts
 router.post('/post/bulk_posts', isAuthenticated, temp_file.single("file"), new BulkPostsImportController().handle);
 router.patch('/post/likes', new PostLikeController().handle);
 router.patch("/post/:post_id/views", new UpdateViewsController().handle);
+router.get('/post/blog/search_nav_bar', new SearchBlogPostController().handle);
 
 // -- ROUTES POST CATEGORY --
 router.post('/post_category/create_post_category', isAuthenticated, new PostCategoryCreateController().handle);
@@ -265,5 +267,6 @@ router.put('/marketing_configurations/update/type', isAuthenticated, new TypeCon
 router.delete('/marketing_configurations/delete/type', isAuthenticated, new TypeConfigurationMarketingDeleteController().handle);
 router.post('/marketing_configurations/configuration', isAuthenticated, new CreateConfigurationMarketingController().handle);
 router.get('/marketing_configurations/configuration/all_configs', isAuthenticated, new AllConfigurationMarketingController().handle);
+
 
 export { router }

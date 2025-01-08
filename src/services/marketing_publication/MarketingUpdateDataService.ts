@@ -8,7 +8,7 @@ interface PublicationProps {
     title?: string;
     description?: string;
     image_url?: string;
-    status?: string;
+    status?: "Disponivel" | "Indisponivel" | "Programado";
     redirect_url?: string;
     publish_at_start?: Date;
     publish_at_end?: Date;

@@ -8,7 +8,7 @@ interface CreateMarketingPublicationServiceProps {
     redirect_url?: string;
     publish_at_start?: Date;
     publish_at_end?: Date;
-    status?: "Disponivel" | "Indisponivel";
+    status?: "Disponivel" | "Indisponivel" | "Programado";
     is_popup?: boolean;
     configurationMarketingPublication?: string[];
 }

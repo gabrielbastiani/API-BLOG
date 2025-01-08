@@ -25,7 +25,7 @@ class EndMarketingPublicationScheduler {
             // Busca publicações que precisam ser encerradas e não estão em processamento
             const publications = await prismaClient.marketingPublication.findMany({
                 where: {
-                    status: "Fim_da_programacao",
+                    status: "Disponivel_programado",
                     publish_at_end: { lte: now },
                     is_processing: false,
                     email_sent: false, // Apenas publicações sem email enviado
