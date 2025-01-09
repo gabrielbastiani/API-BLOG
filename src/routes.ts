@@ -43,7 +43,8 @@ import { GenerateExcelPostsController } from "./controllers/post/GenerateExcelPo
 import { BulkPostsImportController } from "./controllers/post/BulkPostsImportController";
 import { PostLikeController } from "./controllers/post/PostLikeController";
 import { UpdateViewsController } from "./controllers/post/UpdateViewsController";
-import { SearchBlogPostController } from "./controllers/post/SearchBlogPostController";
+import { NavBarSearchBlogPostController } from "./controllers/post/NavBarSearchBlogPostController";
+import { SearchPostBlogController } from "./controllers/post/SearchPostBlogController";
 
 // -- ROUTES POST CATEGORY --
 import { PostCategoryCreateController } from "./controllers/post_category/PostCategoryCreateController";
@@ -186,7 +187,8 @@ router.get('/post/donwload_excel_posts', isAuthenticated, new GenerateExcelPosts
 router.post('/post/bulk_posts', isAuthenticated, temp_file.single("file"), new BulkPostsImportController().handle);
 router.patch('/post/likes', new PostLikeController().handle);
 router.patch("/post/:post_id/views", new UpdateViewsController().handle);
-router.get('/post/blog/search_nav_bar', new SearchBlogPostController().handle);
+router.get('/post/blog/search_nav_bar', new NavBarSearchBlogPostController().handle);
+router.get('/post/articles/blog', new SearchPostBlogController().handle);
 
 // -- ROUTES POST CATEGORY --
 router.post('/post_category/create_post_category', isAuthenticated, new PostCategoryCreateController().handle);

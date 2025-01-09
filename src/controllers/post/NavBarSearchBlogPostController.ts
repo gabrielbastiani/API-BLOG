@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
-import { SearchBlogPostService } from "../../services/post/SearchBlogPostService";
+import { NavBarSearchBlogPostService } from "../../services/post/NavBarSearchBlogPostService";
 
-class SearchBlogPostController {
+class NavBarSearchBlogPostController {
     async handle(req: Request, res: Response) {
         const {
             search = ""
         } = req.query;
 
-        const allPosts = new SearchBlogPostService();
+        const allPosts = new NavBarSearchBlogPostService();
         const posts = await allPosts.execute(
             String(search)
         );
@@ -16,4 +16,4 @@ class SearchBlogPostController {
     }
 }
 
-export { SearchBlogPostController };
+export { NavBarSearchBlogPostController };

@@ -1,7 +1,7 @@
 import prismaClient from "../../prisma";
 import { Prisma, StatusPost } from "@prisma/client";
 
-class SearchBlogPostService {
+class NavBarSearchBlogPostService {
   async execute(
     search: string = ""
   ) {
@@ -39,4 +39,4 @@ class SearchBlogPostService {
   }
 }
 
-export { SearchBlogPostService };
+export { NavBarSearchBlogPostService };
