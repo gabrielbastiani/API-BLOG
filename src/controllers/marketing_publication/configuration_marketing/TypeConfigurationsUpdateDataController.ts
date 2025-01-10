@@ -9,7 +9,8 @@ class TypeConfigurationsUpdateDataController {
             name,
             description,
             configurationMarketingConfiguration_id,
-            value
+            value,
+            banner_interval
         } = req.body;
 
         const update_configurations = new TypeConfigurationsUpdateDataService();
@@ -19,7 +20,8 @@ class TypeConfigurationsUpdateDataController {
             configurationMarketingConfiguration_id,
             value,
             name,
-            description
+            description,
+            banner_interval
         });
 
         return res.json(configurations);

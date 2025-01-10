@@ -298,12 +298,13 @@ model NotificationUserBlog {
 }
 
 model ConfigurationMarketingType {
-  id          String  @id @default(uuid())
-  name        String  @unique
-  description String?
+  id              String  @id @default(uuid())
+  name            String  @unique
+  description     String?
+  banner_interval Int?    @default(3000)
 
   configurationMarketingConfiguration ConfigurationMarketingConfiguration[]
-  ConfigurationMarketingOnPublication ConfigurationMarketingOnPublication[]
+  configurationMarketingOnPublication ConfigurationMarketingOnPublication[]
 
   created_at DateTime @default(now()) @db.Timestamptz(3)
   updated_at DateTime @updatedAt

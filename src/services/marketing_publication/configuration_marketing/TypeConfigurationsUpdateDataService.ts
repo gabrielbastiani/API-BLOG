@@ -5,6 +5,7 @@ interface ConfigsProps {
     name?: string;
     description?: string;
     value?: string;
+    banner_interval?: number;
     configurationMarketingConfiguration_id?: string;
 }
 
@@ -14,10 +15,15 @@ class TypeConfigurationsUpdateDataService {
         name,
         description,
         value,
+        banner_interval,
         configurationMarketingConfiguration_id
     }: ConfigsProps) {
 
         const dataToUpdate: any = {};
+
+        if (banner_interval) {
+            dataToUpdate.banner_interval = banner_interval;
+        }
 
         if (name) {
             dataToUpdate.name = name;

@@ -5,14 +5,16 @@ class CreateTypeConfigurationMarketingController {
     async handle(req: Request, res: Response) {
         const {
             name,
-            description
+            description,
+            banner_interval
         } = req.body;
 
         const createConfiguration = new CreateTypeConfigurationMarketingService();
 
         const marketing = await createConfiguration.execute({
             name,
-            description
+            description,
+            banner_interval
         });
 
         return res.status(201).json(marketing);
