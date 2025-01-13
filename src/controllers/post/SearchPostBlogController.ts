@@ -11,9 +11,7 @@ class SearchPostBlogController {
             limit = 6,
             search = "",
             orderBy = "created_at",
-            orderDirection = "desc",
-            startDate,
-            endDate
+            orderDirection = "desc"
         } = req.query;
 
         // Validar o post_id se for passado
@@ -28,9 +26,7 @@ class SearchPostBlogController {
             Number(limit),
             String(search),
             String(orderBy),
-            orderDirection as Prisma.SortOrder,
-            startDate ? String(startDate) : undefined,
-            endDate ? String(endDate) : undefined
+            orderDirection as Prisma.SortOrder
         );
 
         return res.json(posts);

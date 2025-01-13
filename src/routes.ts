@@ -31,6 +31,7 @@ import { CategoriesController } from "./controllers/category/CategoriesControlle
 import { GenerateExcelCategoryController } from "./controllers/category/GenerateExcelCategoryController";
 import { BulkCategoryImportController } from "./controllers/category/BulkCategoryImportController";
 import { CategoriesBlogController } from "./controllers/category/CategoriesBlogController";
+import { PostsCategoryController } from "./controllers/category/PostsCategoryController";
 
 // -- ROUTES POST --
 import { PostCreateController } from "./controllers/post/PostCreateController";
@@ -176,6 +177,7 @@ router.post('/category/bulk_categories', isAuthenticated, temp_file.single("file
 router.post('/category/bulk_delete_category', isAuthenticated, temp_file.single('file'), new BulkDeleteCategoryController().handle);
 router.get('/category/download_excel_delete_category', isAuthenticated, new GenerateExcelDeleteCategoryController().handle);
 router.get('/categories/blog/posts', new CategoriesBlogController().handle);
+router.get('/category/on_posts', new PostsCategoryController().handle);
 
 // -- ROUTES POST --
 router.post('/post/create_post', isAuthenticated, upload_image.single('file'), new PostCreateController().handle);
