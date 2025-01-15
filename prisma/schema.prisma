@@ -215,6 +215,8 @@ model Comment {
   post_id     String    @db.Uuid
   userBlog    UserBlog? @relation(fields: [userBlog_id], references: [id], onDelete: SetNull)
   userBlog_id String?   @db.Uuid
+  name_user   String?
+  image_user  String?
   comment     String    @db.VarChar(5000)
   status      String    @default("Pendente")
   nivel       Int?

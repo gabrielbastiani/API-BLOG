@@ -4,13 +4,15 @@ import prismaClient from "../../prisma";
 interface CommentRequest {
     post_id: string;
     userBlog_id: string;
+    name_user?: string;
+    image_user?: string;
     comment: string;
     parentId?: string;
     nivel?: number;
 }
 
 class CommentCreateService {
-    async execute({ post_id, userBlog_id, comment, parentId }: CommentRequest) {
+    async execute({ post_id, userBlog_id, name_user, image_user, comment, parentId }: CommentRequest) {
         if (!post_id || !userBlog_id || !comment) {
             throw new Error("Campos obrigatórios ausentes: post_id, userBlog_id ou comment.");
         }
@@ -32,6 +34,8 @@ class CommentCreateService {
             data: {
                 post_id,
                 userBlog_id,
+                name_user,
+                image_user,
                 comment,
                 parentId,
                 nivel: computedNivel,

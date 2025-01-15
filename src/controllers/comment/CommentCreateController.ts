@@ -4,10 +4,10 @@ import { CommentCreateService } from '../../services/comment/CommentCreateServic
 class CommentCreateController {
     async handle(req: Request, res: Response) {
         try {
-            const { post_id, userBlog_id, comment, parentId } = req.body;
+            const { post_id, userBlog_id, name_user, image_user, comment, parentId } = req.body;
 
             const create_comment = new CommentCreateService();
-            const comments = await create_comment.execute({ post_id, userBlog_id, comment, parentId });
+            const comments = await create_comment.execute({ post_id, userBlog_id, name_user, image_user, comment, parentId });
 
             return res.status(201).json(comments);
         } catch (error) {

@@ -66,6 +66,7 @@ import { CommentStatusController } from "./controllers/comment/CommentStatusCont
 import { CommentDeleteController } from "./controllers/comment/CommentDeleteController";
 import { AllCommentController } from "./controllers/comment/AllCommentController";
 import { CommentLikeController } from "./controllers/comment/CommentLikeController";
+import { CommentAllPostController } from "./controllers/comment/CommentAllPostController";
 
 // -- ROUTES FORM CONTACT --
 import { FormContactCreateController } from "./controllers/form_contact/FormContactCreateController";
@@ -207,6 +208,7 @@ router.put('/comment/update_status', isAuthenticated, new CommentStatusControlle
 router.patch('/comment/likes', new CommentLikeController().handle);
 router.put('/comment/delete', isAuthenticated, new CommentDeleteController().handle);
 router.get('/comment/cms/get_comments', isAuthenticated, new AllCommentController().handle);
+router.get('/comment/get_comments/post', new CommentAllPostController().handle);
 
 // -- ROUTES FORM CONTACT --
 router.post('/form_contact/create_form_contact', new FormContactCreateController().handle);
