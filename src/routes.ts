@@ -8,6 +8,11 @@ import { CreateConfigurationBlogController } from "./controllers/configuration_b
 import { GetConfigurationsBlogController } from "./controllers/configuration_blog/GetConfigurationsBlogController";
 import { UpdateConfigurationBlogController } from "./controllers/configuration_blog/UpdateConfigurationBlogController";
 
+// -- ROUTES MEDIAS SOCIAL --
+import { CreateMediaSocialBlogController } from "./controllers/configuration_blog/media_social/CreateMediaSocialBlogController";
+import { UpdateMediaSocialBlogController } from "./controllers/configuration_blog/media_social/UpdateMediaSocialBlogController";
+import { MediasSocialsBlogController } from "./controllers/configuration_blog/media_social/MediasSocialsBlogController";
+
 // -- ROUTES USERS --
 import { UserCreateController } from "./controllers/user/UserCreateController";
 import { BulkUserImportController } from "./controllers/user/BulkUserImportController";
@@ -147,6 +152,11 @@ const temp_file = multer(uploadConfig.upload("./temp_file"));
 router.post('/configuration_blog/create', upload_image.single('file'), new CreateConfigurationBlogController().handle);
 router.get('/configuration_blog/get_configs', new GetConfigurationsBlogController().handle);
 router.put('/configuration_blog/update', isAuthenticated, upload_image.single('file'), new UpdateConfigurationBlogController().handle);
+
+// -- ROUTES MEDIAS SOCIAL --
+router.post('/create/media_social', isAuthenticated, upload_image.single('file'), new CreateMediaSocialBlogController().handle);
+router.put('/update/media_social', isAuthenticated, upload_image.single('file'), new UpdateMediaSocialBlogController().handle);
+router.get('/get/media_social', new MediasSocialsBlogController().handle);
 
 // -- ROUTES USERS --
 router.post('/user/create', upload_image.single('file'), new UserCreateController().handle);

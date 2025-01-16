@@ -109,7 +109,7 @@ class UserBlogCreateService {
 
         await transporter.sendMail({
             from: `"${infos_blog.name_blog} " <${infos_blog.email_blog}>`,
-            to: "infos_blog.email_blog",
+            to: infos_blog.email_blog,
             subject: `Novo usuario do ${infos_blog.name_blog}`,
             html: data
         });

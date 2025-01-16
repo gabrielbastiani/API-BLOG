@@ -8,7 +8,11 @@ class CommentAllPostService {
     async execute({ post_id }: CommentRequest) {
         const comments = await prismaClient.comment.findMany({
             where: {
-                post_id: post_id
+                post_id: post_id,
+                status: "Aprovado"
+            },
+            orderBy: {
+                created_at: 'desc'
             },
             include: {
                 parent: {

@@ -1,6 +1,4 @@
 import prismaClient from "../../../prisma";
-import fs from 'fs';
-import path from 'path';
 
 interface UserRequest {
     id_delete: string[];
@@ -16,21 +14,6 @@ class UserBlogDeleteService {
                 id: {
                     in: id_delete
                 }
-            }
-        });
-
-        users.forEach((userBlog) => {
-            if (userBlog.image_user) {
-                const imagePath = path.resolve(__dirname + '/' + '..' + '/' + '..' + '/' + '..' + '/' + '..' + '/' + 'images' + '/' + userBlog.image_user);
-                console.log(`Deleting image: ${imagePath}`);
-
-                fs.unlink(imagePath, (err) => {
-                    if (err) {
-                        console.error(`Failed to delete image for userBlog ${userBlog.id}: ${err.message}`);
-                    } else {
-                        console.log(`Image for userBlog ${userBlog.id} deleted successfully`);
-                    }
-                });
             }
         });
 

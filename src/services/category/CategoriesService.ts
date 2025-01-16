@@ -3,7 +3,9 @@ import prismaClient from "../../prisma";
 
 class CategoriesService {
   async execute() {
+    
     async function fetchChildren(parentId: string | null) {
+
       const categories = await prismaClient.category.findMany({
         where: { parentId },
         orderBy: { order: "asc" },
