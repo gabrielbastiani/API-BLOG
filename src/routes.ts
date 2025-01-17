@@ -52,6 +52,7 @@ import { UpdateViewsController } from "./controllers/post/UpdateViewsController"
 import { NavBarSearchBlogPostController } from "./controllers/post/NavBarSearchBlogPostController";
 import { SearchPostBlogController } from "./controllers/post/SearchPostBlogController";
 import { PostContentController } from "./controllers/post/PostContentController";
+import { ReloadPostDataController } from "./controllers/post/ReloadPostDataController";
 
 // -- ROUTES POST CATEGORY --
 import { PostCategoryCreateController } from "./controllers/post_category/PostCategoryCreateController";
@@ -205,6 +206,7 @@ router.patch("/post/:post_id/views", new UpdateViewsController().handle);
 router.get('/post/blog/search_nav_bar', new NavBarSearchBlogPostController().handle);
 router.get('/post/articles/blog', new SearchPostBlogController().handle);
 router.get('/post/article/content', new PostContentController().handle);
+router.get('/post/reload_data', new ReloadPostDataController().handle);
 
 // -- ROUTES POST CATEGORY --
 router.post('/post_category/create_post_category', isAuthenticated, new PostCategoryCreateController().handle);
