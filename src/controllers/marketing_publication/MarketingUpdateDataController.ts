@@ -12,7 +12,10 @@ class MarketingUpdateDataController {
             redirect_url,
             publish_at_start,
             publish_at_end,
-            configurationMarketingOnPublication
+            position,
+            conditions,
+            text_publication,
+            local
         } = req.body;
 
         const update_publication = new MarketingUpdateDataService();
@@ -31,7 +34,10 @@ class MarketingUpdateDataController {
             redirect_url,
             publish_at_start,
             publish_at_end,
-            configurationMarketingOnPublication: configurationMarketingOnPublication ? JSON.parse(configurationMarketingOnPublication) : undefined,
+            position,
+            conditions,
+            text_publication,
+            local
         });
 
         return res.json(publications);

@@ -135,13 +135,11 @@ import { MarketingUpdateDataController } from "./controllers/marketing_publicati
 import { GenerateExcelDeletePublicationController } from "./controllers/marketing_publication/GenerateExcelDeletePublicationController";
 import { BulkDeleteMarketingPublicationController } from "./controllers/marketing_publication/BulkDeleteMarketingPublicationController";
 import { MarketingPublicationDeleteDeleteController } from "./controllers/marketing_publication/MarketingPublicationDeleteDeleteController";
-import { CreateTypeConfigurationMarketingController } from "./controllers/marketing_publication/configuration_marketing/CreateTypeConfigurationMarketingController";
-import { AllTypeConfigurationMarketingController } from "./controllers/marketing_publication/configuration_marketing/AllTypeConfigurationMarketingController";
-import { TypeConfigurationsUpdateDataController } from "./controllers/marketing_publication/configuration_marketing/TypeConfigurationsUpdateDataController";
-import { TypeConfigurationMarketingDeleteController } from "./controllers/marketing_publication/configuration_marketing/TypeConfigurationMarketingDeleteController";
-import { CreateConfigurationMarketingController } from "./controllers/marketing_publication/configuration_marketing/CreateConfigurationMarketingController";
-import { AllConfigurationMarketingController } from "./controllers/marketing_publication/configuration_marketing/AllConfigurationMarketingController";
-import { BlogMarketingPublicationController } from "./controllers/marketing_publication/BlogMarketingPublicationController";
+import { SlideBlogMarketingPublicationController } from "./controllers/marketing_publication/SlideBlogMarketingPublicationController";
+import { PopupBlogMarketingPublicationController } from "./controllers/marketing_publication/PopupBlogMarketingPublicationController";
+import { IntervalBannerController } from "./controllers/marketing_publication/IntervalBannerController";
+import { ExistingIntervalBannerController } from "./controllers/marketing_publication/ExistingIntervalBannerController";
+import { IntervalUpdateDataController } from "./controllers/marketing_publication/IntervalUpdateDataController";
 
 
 const router = Router();
@@ -282,13 +280,11 @@ router.put('/marketing_publication/update', isAuthenticated, upload_image.single
 router.get('/marketing_publication/download_excel_delete_marketing', isAuthenticated, new GenerateExcelDeletePublicationController().handle);
 router.post('/marketing_publication/bulk_delete_publications', isAuthenticated, temp_file.single('file'), new BulkDeleteMarketingPublicationController().handle);
 router.delete('/marketing_publication/delete_publications', isAuthenticated, new MarketingPublicationDeleteDeleteController().handle);
-router.post('/marketing_configurations/create/type', isAuthenticated, new CreateTypeConfigurationMarketingController().handle);
-router.get('/all_marketing_configurations/type', isAuthenticated, new AllTypeConfigurationMarketingController().handle);
-router.put('/marketing_configurations/update/type', isAuthenticated, new TypeConfigurationsUpdateDataController().handle);
-router.delete('/marketing_configurations/delete/type', isAuthenticated, new TypeConfigurationMarketingDeleteController().handle);
-router.post('/marketing_configurations/configuration', isAuthenticated, new CreateConfigurationMarketingController().handle);
-router.get('/marketing_configurations/configuration/all_configs', isAuthenticated, new AllConfigurationMarketingController().handle);
-router.get('/marketing_publication/blog_publications', new BlogMarketingPublicationController().handle);
+router.get('/marketing_publication/blog_publications/slides', new SlideBlogMarketingPublicationController().handle);
+router.get('/marketing_publication/blog_publications/popup', new PopupBlogMarketingPublicationController().handle);
+router.post('/marketing_publication/interval_banner', isAuthenticated, new IntervalBannerController().handle);
+router.get('/marketing_publication/interval_banner/existing_interval', isAuthenticated, new ExistingIntervalBannerController().handle);
+router.put('/marketing_publication/interval_banner/update_data', isAuthenticated, new IntervalUpdateDataController().handle);
 
 
 export { router }

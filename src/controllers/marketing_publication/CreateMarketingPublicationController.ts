@@ -10,10 +10,14 @@ class CreateMarketingPublicationController {
             publish_at_start,
             publish_at_end,
             status,
-            is_popup
+            position,
+            conditions,
+            text_publication,
+            local,
+            popup_time
         } = req.body;
 
-        const configurationMarketingPublication = req.body.configurationMarketingPublication ? JSON.parse(req.body.configurationMarketingPublication) : [];
+        console.log(req.body)
 
         let imageToUpdate = req.body.image_url;
         if (!req.body.image_url && req.file) {
@@ -21,6 +25,7 @@ class CreateMarketingPublicationController {
         }
 
         const createBannerService = new CreateMarketingPublicationService();
+        const popupTime = popup_time && !isNaN(Number(popup_time)) ? Number(popup_time) : undefined;
 
         const marketing = await createBannerService.execute({
             title,
@@ -29,9 +34,12 @@ class CreateMarketingPublicationController {
             redirect_url,
             publish_at_start: publish_at_start ? new Date(publish_at_start) : undefined,
             publish_at_end: publish_at_end ? new Date(publish_at_end) : undefined,
-            configurationMarketingPublication,
             status: status || "Indisponivel",
-            is_popup: is_popup === "true"
+            position,
+            conditions,
+            text_publication,
+            local,
+            popup_time: popupTime,
         });
 
         return res.status(201).json(marketing);

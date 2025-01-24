@@ -9,8 +9,11 @@ interface CreateMarketingPublicationServiceProps {
     publish_at_start?: Date;
     publish_at_end?: Date;
     status?: "Disponivel" | "Indisponivel" | "Programado";
-    is_popup?: boolean;
-    configurationMarketingPublication?: string[];
+    position: "SLIDER" | "TOP_BANNER" | "SIDEBAR" | "POPUP";
+    conditions?: string;
+    text_publication?: string;
+    local?: string;
+    popup_time?: number;
 }
 
 class CreateMarketingPublicationService {
@@ -22,32 +25,30 @@ class CreateMarketingPublicationService {
         publish_at_start,
         publish_at_end,
         status,
-        configurationMarketingPublication,
-        is_popup
+        position,
+        conditions,
+        text_publication,
+        local,
+        popup_time
     }: CreateMarketingPublicationServiceProps) {
+
         const marketing_publication = await prismaClient.marketingPublication.create({
             data: {
                 title,
                 description,
                 image_url,
                 redirect_url,
-                publish_at_start,
-                publish_at_end,
-                is_popup,
+                publish_at_start: publish_at_start ? new Date(publish_at_start).toISOString() : null,
+                publish_at_end: publish_at_end ? new Date(publish_at_end).toISOString() : null,
+                position,
+                conditions,
                 status,
+                text_publication,
+                local,
+                popup_time: popup_time && !isNaN(Number(popup_time)) ? Number(popup_time) : undefined
             },
         });
 
-        if (configurationMarketingPublication && configurationMarketingPublication.length > 0) {
-            await prismaClient.configurationMarketingOnPublication.createMany({
-                data: configurationMarketingPublication.map((configurationMarketingType_id) => ({
-                    marketingPublication_id: marketing_publication.id,
-                    configurationMarketingType_id,
-                })),
-            });
-        }
-
-        // Lógica de envio de notificações (permanece a mesma)
         const users_superAdmins = await prismaClient.user.findMany({ where: { role: RoleUser.SUPER_ADMIN } });
         const users_admins = await prismaClient.user.findMany({ where: { role: RoleUser.ADMIN } });
 

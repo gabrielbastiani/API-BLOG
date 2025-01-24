@@ -4,7 +4,7 @@ import { Prisma } from "@prisma/client";
 
 class AllMarketingPublicationService {
     async execute(
-        marketing_content_id?: string,
+        marketing_publication_id?: string,
         page: number = 1,
         limit: number = 5,
         search: string = "",
@@ -39,14 +39,7 @@ class AllMarketingPublicationService {
             where: whereClause,
             skip,
             take: limit,
-            orderBy: { [orderBy]: orderDirection },
-            include: {
-                configurationMarketingOnPublication: {
-                    include: {
-                        configurationMarketingType: true
-                    }
-                }
-            }
+            orderBy: { [orderBy]: orderDirection }
         });
 
         const total_publications = await prismaClient.marketingPublication.count({
@@ -57,17 +50,10 @@ class AllMarketingPublicationService {
 
         let marketing_content_unique = null;
 
-        if (marketing_content_id) {
+        if (marketing_publication_id) {
             marketing_content_unique = await prismaClient.marketingPublication.findUnique({
                 where: {
-                    id: marketing_content_id,
-                },
-                include: {
-                    configurationMarketingOnPublication: {
-                        include: {
-                            configurationMarketingType: true
-                        }
-                    }
+                    id: marketing_publication_id,
                 }
             });
         }

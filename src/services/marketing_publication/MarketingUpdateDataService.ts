@@ -1,4 +1,4 @@
-import { StatusMarketingPublication } from '@prisma/client';
+import { Position, StatusMarketingPublication } from '@prisma/client';
 import prismaClient from '../../prisma';
 import fs from 'fs';
 import path from 'path';
@@ -12,7 +12,10 @@ interface PublicationProps {
     redirect_url?: string;
     publish_at_start?: Date;
     publish_at_end?: Date;
-    configurationMarketingOnPublication?: string[];
+    position?: "SLIDER" | "TOP_BANNER" | "SIDEBAR" | "POPUP";
+    conditions?: string;
+    text_publication?: string;
+    local?: string;
 }
 
 class MarketingUpdateDataService {
@@ -25,7 +28,10 @@ class MarketingUpdateDataService {
         redirect_url,
         publish_at_start,
         publish_at_end,
-        configurationMarketingOnPublication
+        position,
+        conditions,
+        text_publication,
+        local
     }: PublicationProps) {
 
         const marketingPublication = await prismaClient.marketingPublication.findUnique({
@@ -38,8 +44,24 @@ class MarketingUpdateDataService {
             dataToUpdate.title = title;
         }
 
+        if (local) {
+            dataToUpdate.local = local;
+        }
+
+        if (conditions) {
+            dataToUpdate.conditions = conditions;
+        }
+
+        if (position) {
+            dataToUpdate.position = position as Position;
+        }
+
         if (description) {
             dataToUpdate.description = description;
+        }
+
+        if (text_publication) {
+            dataToUpdate.text_publication = text_publication;
         }
 
         if (image_url) {
@@ -66,28 +88,11 @@ class MarketingUpdateDataService {
         }
 
         if (publish_at_start) {
-            dataToUpdate.publish_at_start = publish_at_start;
+            dataToUpdate.publish_at_start = new Date(publish_at_start).toISOString();
         }
 
         if (publish_at_end) {
-            dataToUpdate.publish_at_end = publish_at_end;
-        }
-
-        if (configurationMarketingOnPublication) {
-            // Deletar antigas
-            await prismaClient.configurationMarketingOnPublication.deleteMany({
-                where: { marketingPublication_id },
-            });
-
-            // Adicionar novas
-            const configurationRelation = configurationMarketingOnPublication.map((configurationMarketingType_id) => ({
-                marketingPublication_id,
-                configurationMarketingType_id,
-            }));
-
-            await prismaClient.configurationMarketingOnPublication.createMany({
-                data: configurationRelation,
-            });
+            dataToUpdate.publish_at_end = new Date(publish_at_end).toISOString();
         }
 
         const update_publications = await prismaClient.marketingPublication.update({

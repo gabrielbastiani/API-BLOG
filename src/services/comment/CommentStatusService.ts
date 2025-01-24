@@ -44,7 +44,7 @@ class CommentStatusService {
                 logo: infos_blog.logo,
                 name_blog: infos_blog.name_blog
             });
-    
+
             await transporter.sendMail({
                 from: `"${infos_blog.name_blog} " <${infos_blog.email_blog}>`,
                 to: update_status.userBlog.email,
@@ -62,7 +62,7 @@ class CommentStatusService {
                 logo: infos_blog.logo,
                 name_blog: infos_blog.name_blog
             });
-    
+
             await transporter.sendMail({
                 from: `"${infos_blog.name_blog} " <${infos_blog.email_blog}>`,
                 to: update_status.userBlog.email,
@@ -80,13 +80,56 @@ class CommentStatusService {
                 logo: infos_blog.logo,
                 name_blog: infos_blog.name_blog
             });
-    
+
             await transporter.sendMail({
                 from: `"${infos_blog.name_blog} " <${infos_blog.email_blog}>`,
                 to: update_status.userBlog.email,
                 subject: `Status do seu comentario/resposta`,
                 html: data
             });
+
+            const threadUserComments = await prismaClient.comment.findMany({
+                where: {
+                    OR: [
+                        { id: update_status.parentId },
+                        { parentId: update_status.id },
+                    ],
+                    post_id: update_status.post_id,
+                },
+                distinct: ['userBlog_id'],
+                select: {
+                    userBlog: {
+                        select: {
+                            email: true,
+                            name: true,
+                        },
+                    },
+                },
+            });
+
+            const emailsToNotify = threadUserComments
+                .filter((user) => user.userBlog.email !== update_status.userBlog.email)
+                .map((user) => user.userBlog.email);
+
+            const emailTemplatePath = path.join(__dirname, `../emails_transacionais/resposta_comentario.ejs`);
+            const emailData = await ejs.renderFile(emailTemplatePath, {
+                name: update_status.name_user,
+                post: update_status.post.title,
+                status: status,
+                logo: infos_blog.logo,
+                name_blog: infos_blog.name_blog
+            });
+
+            await Promise.all(
+                emailsToNotify.map((email) =>
+                    transporter.sendMail({
+                        from: `"${infos_blog.name_blog}" <${infos_blog.email_blog}>`,
+                        to: email,
+                        subject: `Atualização no status de um comentário no qual você participou`,
+                        html: emailData
+                    })
+                )
+            );
         }
 
         return update_status;
