@@ -140,6 +140,9 @@ import { PopupBlogMarketingPublicationController } from "./controllers/marketing
 import { IntervalBannerController } from "./controllers/marketing_publication/IntervalBannerController";
 import { ExistingIntervalBannerController } from "./controllers/marketing_publication/ExistingIntervalBannerController";
 import { IntervalUpdateDataController } from "./controllers/marketing_publication/IntervalUpdateDataController";
+import { IntervalBannerPageController } from "./controllers/marketing_publication/IntervalBannerPageController";
+import { ExistingSlidesBannerPageController } from "./controllers/marketing_publication/ExistingSlidesBannerPageController";
+import { ExistingSidebarBannerPageController } from "./controllers/marketing_publication/ExistingSidebarBannerPageController";
 
 
 const router = Router();
@@ -285,6 +288,9 @@ router.get('/marketing_publication/blog_publications/popup', new PopupBlogMarket
 router.post('/marketing_publication/interval_banner', isAuthenticated, new IntervalBannerController().handle);
 router.get('/marketing_publication/interval_banner/existing_interval', isAuthenticated, new ExistingIntervalBannerController().handle);
 router.put('/marketing_publication/interval_banner/update_data', isAuthenticated, new IntervalUpdateDataController().handle);
+router.get('/marketing_publication/interval_banner/page_banner', new IntervalBannerPageController().handle);
+router.get('/marketing_publication/existing_banner', new ExistingSlidesBannerPageController().handle);
+router.get('/marketing_publication/existing_sidebar', new ExistingSidebarBannerPageController().handle);
 
 
 export { router }

@@ -149,7 +149,7 @@ model Post {
   text_post       String
   image_post      String?
   status          StatusPost @default(Disponivel)
-  publish_at      DateTime?
+  publish_at      DateTime?  @db.Timestamptz(3)
   post_like       Float?     @default(0)
   post_dislike    Float?     @default(0)
   views           Float?     @default(0)
@@ -324,8 +324,8 @@ model MarketingPublication {
   status           StatusMarketingPublication @default(Disponivel)
   text_publication String?                    @db.VarChar(7000)
   popup_time       Int?
-  publish_at_start DateTime?
-  publish_at_end   DateTime?
+  publish_at_start DateTime?                  @db.Timestamptz(3)
+  publish_at_end   DateTime?                  @db.Timestamptz(3)
   is_processing    Boolean                    @default(false)
   is_completed     Boolean                    @default(false)
   email_sent       Boolean                    @default(false)
@@ -354,10 +354,11 @@ enum Position {
 }
 
 model BannerInterval {
-  id               String  @id @default(uuid())
-  interval_banner  Int
-  local_site       String?
-  label_local_site String?
+  id                    String  @id @default(uuid())
+  interval_banner       Int
+  label_interval_banner String
+  local_site            String?
+  label_local_site      String?
 
   created_at DateTime  @default(now()) @db.Timestamptz(3)
   updated_at DateTime? @updatedAt

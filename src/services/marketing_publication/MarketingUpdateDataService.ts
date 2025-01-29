@@ -80,6 +80,10 @@ class MarketingUpdateDataService {
         }
 
         if (status) {
+            if (status === "Programado") {
+                dataToUpdate.is_completed = false,
+                dataToUpdate.email_sent = false
+            }
             dataToUpdate.status = status as StatusMarketingPublication;
         }
 
@@ -88,11 +92,11 @@ class MarketingUpdateDataService {
         }
 
         if (publish_at_start) {
-            dataToUpdate.publish_at_start = new Date(publish_at_start).toISOString();
+            dataToUpdate.publish_at_start = publish_at_start ? new Date(publish_at_start).toISOString() : null;
         }
 
         if (publish_at_end) {
-            dataToUpdate.publish_at_end = new Date(publish_at_end).toISOString();
+            dataToUpdate.publish_at_end = publish_at_end ? new Date(publish_at_end).toISOString() : null;
         }
 
         const update_publications = await prismaClient.marketingPublication.update({

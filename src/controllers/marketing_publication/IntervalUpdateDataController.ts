@@ -9,7 +9,8 @@ class IntervalUpdateDataController {
         const {
             local_site,
             label_local_site,
-            interval_banner
+            interval_banner,
+            label_interval_banner
         } = req.body;
 
         const update_interval = new IntervalUpdateDataService();
@@ -19,7 +20,8 @@ class IntervalUpdateDataController {
             bannerInterval_id,
             local_site,
             label_local_site,
-            interval_banner: interval
+            interval_banner: interval,
+            label_interval_banner
         });
 
         return res.json(intervals);

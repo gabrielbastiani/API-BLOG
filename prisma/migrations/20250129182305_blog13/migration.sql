@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "posts" ALTER COLUMN "publish_at" SET DATA TYPE TIMESTAMPTZ(3);

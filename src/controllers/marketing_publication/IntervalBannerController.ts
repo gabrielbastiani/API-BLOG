@@ -6,7 +6,8 @@ class IntervalBannerController {
         const {
             local_site,
             interval_banner,
-            label_local_site
+            label_local_site,
+            label_interval_banner
         } = req.body;
 
         const createBannerService = new IntervalBannerService();
@@ -16,6 +17,7 @@ class IntervalBannerController {
         const marketing = await createBannerService.execute({
             local_site,
             interval_banner: interval,
+            label_interval_banner,
             label_local_site
         });
 
