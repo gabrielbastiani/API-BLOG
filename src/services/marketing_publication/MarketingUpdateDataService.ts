@@ -14,6 +14,7 @@ interface PublicationProps {
     publish_at_end?: Date;
     position?: "SLIDER" | "TOP_BANNER" | "SIDEBAR" | "POPUP";
     conditions?: string;
+    popup_time?: number;
     text_publication?: string;
     local?: string;
 }
@@ -30,6 +31,7 @@ class MarketingUpdateDataService {
         publish_at_end,
         position,
         conditions,
+        popup_time,
         text_publication,
         local
     }: PublicationProps) {
@@ -50,6 +52,10 @@ class MarketingUpdateDataService {
 
         if (conditions) {
             dataToUpdate.conditions = conditions;
+        }
+
+        if (popup_time) {
+            dataToUpdate.popup_time = Number(popup_time);
         }
 
         if (position) {

@@ -14,6 +14,7 @@ class MarketingUpdateDataController {
             publish_at_end,
             position,
             conditions,
+            popup_time,
             text_publication,
             local
         } = req.body;
@@ -36,6 +37,7 @@ class MarketingUpdateDataController {
             publish_at_end: publish_at_end ? new Date(publish_at_end) : undefined,
             position,
             conditions,
+            popup_time,
             text_publication,
             local
         });
