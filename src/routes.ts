@@ -126,6 +126,7 @@ import { GetNewsletterStatisticsController } from "./controllers/dashboard/GetNe
 import { GetCommentStatisticsController } from "./controllers/dashboard/GetCommentStatisticsController";
 import { GetContactStatisticsController } from "./controllers/dashboard/GetContactStatisticsController";
 import { GetUserGrowthMetricsController } from "./controllers/dashboard/GetUserGrowthMetricsController";
+import { GetMarketingStatisticsController } from "./controllers/dashboard/GetMarketingStatisticsController";
 
 // -- ROUTES MARKETING --
 import { CreateMarketingPublicationController } from "./controllers/marketing_publication/CreateMarketingPublicationController";
@@ -273,6 +274,7 @@ router.get('/dashboard/newslatter/statistics', isAuthenticated, new GetNewslette
 router.get('/dashboard/comment/statistics', isAuthenticated, new GetCommentStatisticsController().handle);
 router.get('/dashboard/contact/statistics', isAuthenticated, new GetContactStatisticsController().handle);
 router.get('/dashboard/userBlog/statistics', isAuthenticated, new GetUserGrowthMetricsController().handle);
+router.get('/dashboard/publication_marketing/statistics', isAuthenticated, new GetMarketingStatisticsController().handle);
 
 // -- ROUTES MARKETING --
 router.post('/marketing_publication/create', isAuthenticated, upload_image.single('file'), new CreateMarketingPublicationController().handle);
