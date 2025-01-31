@@ -15,8 +15,9 @@ interface PublicationProps {
     position?: "SLIDER" | "TOP_BANNER" | "SIDEBAR" | "POPUP";
     conditions?: string;
     popup_time?: number;
-    text_publication?: string;
+    text_publication?: string | null | undefined;
     local?: string;
+    text_button?: string;
 }
 
 class MarketingUpdateDataService {
@@ -26,6 +27,7 @@ class MarketingUpdateDataService {
         description,
         image_url,
         status,
+        text_button,
         redirect_url,
         publish_at_start,
         publish_at_end,
@@ -54,6 +56,10 @@ class MarketingUpdateDataService {
             dataToUpdate.conditions = conditions;
         }
 
+        if (text_button) {
+            dataToUpdate.text_button = text_button;
+        }
+
         if (popup_time) {
             dataToUpdate.popup_time = Number(popup_time);
         }
@@ -66,8 +72,16 @@ class MarketingUpdateDataService {
             dataToUpdate.description = description;
         }
 
+        if (!description) {
+            dataToUpdate.description = "";
+        }
+
         if (text_publication) {
             dataToUpdate.text_publication = text_publication;
+        }
+
+        if(!text_publication) {
+            dataToUpdate.text_publication = "";
         }
 
         if (image_url) {

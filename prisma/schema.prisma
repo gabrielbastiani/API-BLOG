@@ -321,6 +321,7 @@ model MarketingPublication {
   position         Position
   conditions       String?
   clicks           Float?                     @default(0)
+  text_button      String?                    @default("Saiba Mais")
   status           StatusMarketingPublication @default(Disponivel)
   text_publication String?                    @db.VarChar(7000)
   popup_time       Int?

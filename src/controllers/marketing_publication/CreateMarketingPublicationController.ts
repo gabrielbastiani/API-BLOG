@@ -12,6 +12,7 @@ class CreateMarketingPublicationController {
             status,
             position,
             conditions,
+            text_button,
             text_publication,
             local,
             popup_time
@@ -37,6 +38,7 @@ class CreateMarketingPublicationController {
             status: status || "Indisponivel",
             position,
             conditions,
+            text_button,
             text_publication,
             local,
             popup_time: popupTime,
