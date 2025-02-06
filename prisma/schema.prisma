@@ -321,7 +321,7 @@ model MarketingPublication {
   position         Position
   conditions       String?
   clicks           Float?                     @default(0)
-  text_button      String?                    @default("Saiba Mais")
+  text_button      String?                    @db.VarChar(100)
   status           StatusMarketingPublication @default(Disponivel)
   text_publication String?                    @db.VarChar(7000)
   popup_time       Int?
@@ -371,7 +371,6 @@ model MarketingPublicationView {
   id                      String                @id @default(uuid()) @db.Uuid
   marketingPublication    MarketingPublication? @relation(fields: [marketingPublication_id], references: [id], onDelete: SetNull)
   marketingPublication_id String?               @db.Uuid
-  local_site              String?
   ipAddress               String?               @db.VarChar(45)
 
   created_at DateTime @default(now()) @db.Timestamptz(3)
