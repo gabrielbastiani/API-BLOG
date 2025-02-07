@@ -6,6 +6,11 @@ interface CommentRequest {
 
 class CommentAllPostService {
     async execute({ post_id }: CommentRequest) {
+
+        if (!post_id || post_id.trim().length === 0) {
+            throw new Error("ID do post inválido.");
+        }
+        
         const comments = await prismaClient.comment.findMany({
             where: {
                 post_id: post_id,

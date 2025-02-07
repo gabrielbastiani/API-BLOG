@@ -12,6 +12,7 @@ import { UpdateConfigurationBlogController } from "./controllers/configuration_b
 import { CreateMediaSocialBlogController } from "./controllers/configuration_blog/media_social/CreateMediaSocialBlogController";
 import { UpdateMediaSocialBlogController } from "./controllers/configuration_blog/media_social/UpdateMediaSocialBlogController";
 import { MediasSocialsBlogController } from "./controllers/configuration_blog/media_social/MediasSocialsBlogController";
+import { DeleteMediasSocialsBlogController } from "./controllers/configuration_blog/media_social/DeleteMediasSocialsBlogController";
 
 // -- ROUTES USERS --
 import { UserCreateController } from "./controllers/user/UserCreateController";
@@ -146,6 +147,7 @@ import { IntervalUpdateDataController } from "./controllers/marketing_publicatio
 import { IntervalBannerPageController } from "./controllers/marketing_publication/IntervalBannerPageController";
 import { ExistingSlidesBannerPageController } from "./controllers/marketing_publication/ExistingSlidesBannerPageController";
 import { ExistingSidebarBannerPageController } from "./controllers/marketing_publication/ExistingSidebarBannerPageController";
+import { DeleteIntervalBannerController } from "./controllers/marketing_publication/DeleteIntervalBannerController";
 
 
 const router = Router();
@@ -162,6 +164,7 @@ router.put('/configuration_blog/update', isAuthenticated, upload_image.single('f
 router.post('/create/media_social', isAuthenticated, upload_image.single('file'), new CreateMediaSocialBlogController().handle);
 router.put('/update/media_social', isAuthenticated, upload_image.single('file'), new UpdateMediaSocialBlogController().handle);
 router.get('/get/media_social', new MediasSocialsBlogController().handle);
+router.delete('/delete/media_social', isAuthenticated, new DeleteMediasSocialsBlogController().handle);
 
 // -- ROUTES USERS --
 router.post('/user/create', upload_image.single('file'), new UserCreateController().handle);
@@ -297,6 +300,7 @@ router.put('/marketing_publication/interval_banner/update_data', isAuthenticated
 router.get('/marketing_publication/interval_banner/page_banner', new IntervalBannerPageController().handle);
 router.get('/marketing_publication/existing_banner', new ExistingSlidesBannerPageController().handle);
 router.get('/marketing_publication/existing_sidebar', new ExistingSidebarBannerPageController().handle);
+router.delete('/marketing_publication/delete', isAuthenticated, new DeleteIntervalBannerController().handle);
 
 
 export { router }
