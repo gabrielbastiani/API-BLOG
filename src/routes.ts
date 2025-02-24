@@ -7,6 +7,7 @@ import { isAuthenticated } from "./middlewares/isAuthenticated";
 import { CreateConfigurationBlogController } from "./controllers/configuration_blog/CreateConfigurationBlogController";
 import { GetConfigurationsBlogController } from "./controllers/configuration_blog/GetConfigurationsBlogController";
 import { UpdateConfigurationBlogController } from "./controllers/configuration_blog/UpdateConfigurationBlogController";
+import { DeleteFilesExcelController } from "./controllers/configuration_blog/DeleteFilesExcelController";
 
 // -- ROUTES MEDIAS SOCIAL --
 import { CreateMediaSocialBlogController } from "./controllers/configuration_blog/media_social/CreateMediaSocialBlogController";
@@ -159,6 +160,7 @@ const temp_file = multer(uploadConfig.upload("./temp_file"));
 router.post('/configuration_blog/create', upload_image.single('file'), new CreateConfigurationBlogController().handle);
 router.get('/configuration_blog/get_configs', new GetConfigurationsBlogController().handle);
 router.put('/configuration_blog/update', isAuthenticated, upload_image.single('file'), new UpdateConfigurationBlogController().handle);
+router.get('/configuration_blog/delete_all_files', isAuthenticated, new DeleteFilesExcelController().handle);
 
 // -- ROUTES MEDIAS SOCIAL --
 router.post('/create/media_social', isAuthenticated, upload_image.single('file'), new CreateMediaSocialBlogController().handle);
