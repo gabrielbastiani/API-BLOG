@@ -55,6 +55,7 @@ import { NavBarSearchBlogPostController } from "./controllers/post/NavBarSearchB
 import { SearchPostBlogController } from "./controllers/post/SearchPostBlogController";
 import { PostContentController } from "./controllers/post/PostContentController";
 import { ReloadPostDataController } from "./controllers/post/ReloadPostDataController";
+import { PostSEOContentController } from "./controllers/post/PostSEOContentController";
 
 // -- ROUTES POST CATEGORY --
 import { PostCategoryCreateController } from "./controllers/post_category/PostCategoryCreateController";
@@ -149,6 +150,7 @@ import { IntervalBannerPageController } from "./controllers/marketing_publicatio
 import { ExistingSlidesBannerPageController } from "./controllers/marketing_publication/ExistingSlidesBannerPageController";
 import { ExistingSidebarBannerPageController } from "./controllers/marketing_publication/ExistingSidebarBannerPageController";
 import { DeleteIntervalBannerController } from "./controllers/marketing_publication/DeleteIntervalBannerController";
+import { DataCategoryPostController } from "./controllers/post/DataCategoryPostController";
 
 
 const router = Router();
@@ -200,6 +202,7 @@ router.post('/category/bulk_delete_category', isAuthenticated, temp_file.single(
 router.get('/category/download_excel_delete_category', isAuthenticated, new GenerateExcelDeleteCategoryController().handle);
 router.get('/categories/blog/posts', new CategoriesBlogController().handle);
 router.get('/category/on_posts', new PostsCategoryController().handle);
+router.get('/category/data_category', new DataCategoryPostController().handle);
 
 // -- ROUTES POST --
 router.post('/post/create_post', isAuthenticated, upload_image.single('file'), new PostCreateController().handle);
@@ -216,6 +219,7 @@ router.get('/post/blog/search_nav_bar', new NavBarSearchBlogPostController().han
 router.get('/post/articles/blog', new SearchPostBlogController().handle);
 router.get('/post/article/content', new PostContentController().handle);
 router.get('/post/reload_data', new ReloadPostDataController().handle);
+router.get('/post/articles/seo', new PostSEOContentController().handle);
 
 // -- ROUTES POST CATEGORY --
 router.post('/post_category/create_post_category', isAuthenticated, new PostCategoryCreateController().handle);

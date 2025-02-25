@@ -10,6 +10,7 @@ class PostsCategoryService {
     orderBy: string = "created_at",
     orderDirection: Prisma.SortOrder = "desc"
   ) {
+
     const skip = (page - 1) * limit;
 
     const whereClause: Prisma.PostWhereInput = {
