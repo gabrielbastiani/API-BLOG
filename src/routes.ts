@@ -9,6 +9,9 @@ import { GetConfigurationsBlogController } from "./controllers/configuration_blo
 import { UpdateConfigurationBlogController } from "./controllers/configuration_blog/UpdateConfigurationBlogController";
 import { DeleteFilesExcelController } from "./controllers/configuration_blog/DeleteFilesExcelController";
 
+// -- SEO --
+import { CreateSeoBlogController } from "./controllers/configuration_blog/seo/CreateSeoBlogController";
+
 // -- ROUTES MEDIAS SOCIAL --
 import { CreateMediaSocialBlogController } from "./controllers/configuration_blog/media_social/CreateMediaSocialBlogController";
 import { UpdateMediaSocialBlogController } from "./controllers/configuration_blog/media_social/UpdateMediaSocialBlogController";
@@ -163,6 +166,9 @@ router.post('/configuration_blog/create', upload_image.single('file'), new Creat
 router.get('/configuration_blog/get_configs', new GetConfigurationsBlogController().handle);
 router.put('/configuration_blog/update', isAuthenticated, upload_image.single('file'), new UpdateConfigurationBlogController().handle);
 router.get('/configuration_blog/delete_all_files', isAuthenticated, new DeleteFilesExcelController().handle);
+
+// -- SEO --
+router.post('/seo/create', isAuthenticated, upload_image.fields([{ name: 'ogImages', maxCount: 5 }, { name: 'twitterImages', maxCount: 5 }]), new CreateSeoBlogController().handle);
 
 // -- ROUTES MEDIAS SOCIAL --
 router.post('/create/media_social', isAuthenticated, upload_image.single('file'), new CreateMediaSocialBlogController().handle);

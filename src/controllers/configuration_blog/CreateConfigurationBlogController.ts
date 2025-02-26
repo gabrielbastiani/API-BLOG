@@ -4,7 +4,7 @@ import { CreateConfigurationBlogService } from '../../services/configuration_blo
 class CreateConfigurationBlogController {
     async handle(req: Request, res: Response) {
         const {
-            name_blog, email_blog, logo
+            name_blog, email_blog, logo, favicon
         } = req.body;
 
         const create_configuration = new CreateConfigurationBlogService();
@@ -14,9 +14,15 @@ class CreateConfigurationBlogController {
             imageToUpdate = req.file.filename;
         }
 
+        let imageFavicon = favicon;
+        if (!favicon && req.file) {
+            imageFavicon = req.file.filename;
+        }
+
         const configuration = await create_configuration.execute({
             name_blog,
             logo: imageToUpdate,
+            favicon: imageFavicon,
             email_blog
         });
 

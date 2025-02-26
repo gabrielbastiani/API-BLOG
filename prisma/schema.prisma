@@ -82,6 +82,7 @@ model ConfigurationBlog {
   email_blog        String? @db.VarChar(725)
   phone             String? @db.VarChar(725)
   logo              String?
+  favicon           String?
   description_blog  String? @db.VarChar(15725)
   author_blog       String? @db.VarChar(225)
   about_author_blog String?
@@ -90,6 +91,29 @@ model ConfigurationBlog {
   updated_at DateTime @updatedAt
 
   @@map("configurationsblog")
+}
+
+model SEOSettings {
+  id                 String  @id @default(uuid())
+  page               String  @unique
+  title              String?
+  description        String?
+  keywords           Json?
+  ogTitle            String?
+  ogDescription      String?
+  ogImages           Json?
+  ogImageWidth       Int?
+  ogImageHeight      Int?
+  ogImageAlt         String?
+  twitterTitle       String?
+  twitterDescription String?
+  twitterCreator     String?
+  twitterImages      Json?
+
+  created_at DateTime @default(now()) @db.Timestamptz(3)
+  updated_at DateTime @updatedAt
+
+  @@map("seo_settings")
 }
 
 model SocialMediasBlog {
