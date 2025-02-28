@@ -14,11 +14,18 @@ class UpdateConfigurationBlogController {
             about_author_blog
         } = req.body;
 
+        let imageToUpdate = req.body.logo;
+        let imageToUpdatefavicon = req.body.favicon;
+
         const update_configs = new UpdateConfigurationBlogService();
 
-        let imageToUpdate = req.body.logo;
-        if (req.file) {
-            imageToUpdate = req.file.filename;
+        if (req.files) {
+            if (req.files['logo']) {
+                imageToUpdate = req.files['logo'][0].filename;
+            }
+            if (req.files['favicon']) {
+                imageToUpdatefavicon = req.files['favicon'][0].filename;
+            }
         }
 
         const configs = await update_configs.execute({
@@ -26,6 +33,7 @@ class UpdateConfigurationBlogController {
             name_blog,
             description_blog,
             logo: imageToUpdate,
+            favicon: imageToUpdatefavicon,
             phone,
             email_blog,
             author_blog,

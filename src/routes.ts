@@ -11,6 +11,8 @@ import { DeleteFilesExcelController } from "./controllers/configuration_blog/Del
 
 // -- SEO --
 import { CreateSeoBlogController } from "./controllers/configuration_blog/seo/CreateSeoBlogController";
+import { GetSeoBlogPageController } from "./controllers/configuration_blog/seo/GetSeoBlogPageController";
+import { AllSeoBlogPageController } from "./controllers/configuration_blog/seo/AllSeoBlogPageController";
 
 // -- ROUTES MEDIAS SOCIAL --
 import { CreateMediaSocialBlogController } from "./controllers/configuration_blog/media_social/CreateMediaSocialBlogController";
@@ -154,6 +156,7 @@ import { ExistingSlidesBannerPageController } from "./controllers/marketing_publ
 import { ExistingSidebarBannerPageController } from "./controllers/marketing_publication/ExistingSidebarBannerPageController";
 import { DeleteIntervalBannerController } from "./controllers/marketing_publication/DeleteIntervalBannerController";
 import { DataCategoryPostController } from "./controllers/post/DataCategoryPostController";
+import { UpdateSeoSettingsController } from "./controllers/configuration_blog/seo/UpdateSeoSettingsController";
 
 
 const router = Router();
@@ -162,13 +165,16 @@ const temp_file = multer(uploadConfig.upload("./temp_file"));
 
 
 // -- ROUTES CONFIGURATION BLOG --
-router.post('/configuration_blog/create', upload_image.single('file'), new CreateConfigurationBlogController().handle);
+router.post('/configuration_blog/create', upload_image.fields([{ name: 'logo', maxCount: 1 }, { name: 'favicon', maxCount: 1 }]), new CreateConfigurationBlogController().handle);
 router.get('/configuration_blog/get_configs', new GetConfigurationsBlogController().handle);
-router.put('/configuration_blog/update', isAuthenticated, upload_image.single('file'), new UpdateConfigurationBlogController().handle);
+router.put('/configuration_blog/update', isAuthenticated, upload_image.fields([{ name: 'logo', maxCount: 1 }, { name: 'favicon', maxCount: 1 }]), new UpdateConfigurationBlogController().handle);
 router.get('/configuration_blog/delete_all_files', isAuthenticated, new DeleteFilesExcelController().handle);
 
 // -- SEO --
 router.post('/seo/create', isAuthenticated, upload_image.fields([{ name: 'ogImages', maxCount: 5 }, { name: 'twitterImages', maxCount: 5 }]), new CreateSeoBlogController().handle);
+router.put('/seo/update_seo', isAuthenticated, upload_image.fields([{ name: 'ogImages', maxCount: 5 }, { name: 'twitterImages', maxCount: 5 }]), new UpdateSeoSettingsController().handle);
+router.get('/seo/get_page', new GetSeoBlogPageController().handle);
+router.get('/seo/all_seos', new AllSeoBlogPageController().handle);
 
 // -- ROUTES MEDIAS SOCIAL --
 router.post('/create/media_social', isAuthenticated, upload_image.single('file'), new CreateMediaSocialBlogController().handle);

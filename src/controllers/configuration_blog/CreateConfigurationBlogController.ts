@@ -7,16 +7,18 @@ class CreateConfigurationBlogController {
             name_blog, email_blog, logo, favicon
         } = req.body;
 
+        let imageToUpdate = logo;
+        let imageFavicon = favicon;
+
         const create_configuration = new CreateConfigurationBlogService();
 
-        let imageToUpdate = logo;
-        if (!logo && req.file) {
-            imageToUpdate = req.file.filename;
-        }
-
-        let imageFavicon = favicon;
-        if (!favicon && req.file) {
-            imageFavicon = req.file.filename;
+        if (req.files) {
+            if (req.files['logo']) {
+                imageToUpdate = req.files['logo'][0].filename;
+            }
+            if (req.files['favicon']) {
+                imageFavicon = req.files['favicon'][0].filename;
+            }
         }
 
         const configuration = await create_configuration.execute({

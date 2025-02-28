@@ -7,6 +7,7 @@ interface ConfigBlog {
     name_blog?: string;
     description_blog?: string;
     logo?: string;
+    favicon?: string;
     phone?: string;
     email_blog?: string;
     author_blog?: string;
@@ -19,6 +20,7 @@ class UpdateConfigurationBlogService {
         name_blog,
         description_blog,
         logo,
+        favicon,
         phone,
         email_blog,
         author_blog,
@@ -56,6 +58,21 @@ class UpdateConfigurationBlogService {
                 });
             }
             dataToUpdate.logo = logo;
+        }
+
+        if (favicon) {
+            if (configurationBlog.favicon) {
+                const imagePath = path.resolve(__dirname + '/' + '..' + '/' + '..' + '/' + '..' + '/' + 'images' + '/' + configurationBlog.favicon);
+                console.log(`Deleting image: ${imagePath}`);
+                fs.unlink(imagePath, (err) => {
+                    if (err) {
+                        console.error(`Failed to delete old image: ${err.message}`);
+                    } else {
+                        console.log('Old image deleted successfully');
+                    }
+                });
+            }
+            dataToUpdate.favicon = favicon;
         }
 
         if (phone) {
