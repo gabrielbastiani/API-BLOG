@@ -11,6 +11,9 @@ interface SeoProps {
     title?: string;
     description?: string;
     keywords?: string[];
+    keywordIndexes?: number[];
+    newKeywords?: string[];
+    deletedKeywordIndexes?: number[];
     ogTitle?: string;
     ogDescription?: string;
     ogImages?: string[];
@@ -40,11 +43,22 @@ class UpdateSeoSettingsService {
         }
 
         // Extrair e validar índices
-        const { 
+        const {
             ogImageIndexes = [],
             twitterImageIndexes = [],
+            keywordIndexes = [],
+            newKeywords = [],
+            deletedKeywordIndexes = [],
             ...prismaUpdateData
         } = updateData;
+
+        // Processar keywords
+        const updatedKeywords = this.processKeywords(
+            currentSettings.keywords as string[] || [],
+            newKeywords || [],
+            keywordIndexes,
+            deletedKeywordIndexes
+        );
 
         // Processar exclusões primeiro
         await this.processDeletions(
@@ -75,6 +89,7 @@ class UpdateSeoSettingsService {
         // Montar dados para atualização
         const dataToUpdate = {
             ...prismaUpdateData,
+            keywords: updatedKeywords,
             ogImages: updatedOgImages,
             twitterImages: updatedTwitterImages,
             ogImageWidth: updateData.ogImageWidth ? Number(updateData.ogImageWidth) : undefined,
@@ -87,13 +102,42 @@ class UpdateSeoSettingsService {
         });
     }
 
+    private processKeywords(
+        currentKeywords: string[],
+        newKeywords: string[],
+        indexes: number[],
+        deletedIndexes: number[] = []
+    ): string[] {
+        const afterDeletion = currentKeywords.filter(
+            (_, index) => !deletedIndexes.includes(index)
+        );
+
+        const updatedKeywords = [...afterDeletion];
+        const validIndexes = this.validateIndexes(updatedKeywords, indexes);
+
+        if (newKeywords.length > validIndexes.length) {
+            throw new Error(`${newKeywords.length} novas keywords para ${validIndexes.length} índices`);
+        }
+
+        newKeywords.forEach((keyword, i) => {
+            const targetIndex = validIndexes[i] ?? updatedKeywords.length;
+            if (targetIndex < updatedKeywords.length) {
+                updatedKeywords[targetIndex] = keyword;
+            } else {
+                updatedKeywords.push(keyword);
+            }
+        });
+
+        return updatedKeywords;
+    }
+
     private async processDeletions(
         currentImages: string[],
         indexes: number[],
         type: string
     ): Promise<void> {
         const validIndexes = this.validateIndexes(currentImages, indexes);
-        
+
         await Promise.all(
             validIndexes.map(async (index) => {
                 const filename = currentImages[index];
@@ -143,7 +187,7 @@ class UpdateSeoSettingsService {
 
     private validateIndexes(currentImages: string[], indexes: number[]): number[] {
         return indexes
-            .filter(index => 
+            .filter(index =>
                 Number.isInteger(index) &&
                 index >= 0 &&
                 index < currentImages.length

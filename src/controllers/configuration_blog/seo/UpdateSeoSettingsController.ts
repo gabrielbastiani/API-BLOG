@@ -8,10 +8,25 @@ const updateSchema = z.object({
     title: z.string().optional(),
     description: z.string().optional(),
     keywords: z.string().optional(),
+    keywordIndexes: z.string().transform(val => {
+        try {
+            const parsed = JSON.parse(val);
+            return Array.isArray(parsed) ? parsed.map(Number) : [];
+        } catch {
+            return [];
+        }
+    }),
+    newKeywords: z.string().transform(val => {
+        try {
+            return JSON.parse(val);
+        } catch {
+            return [];
+        }
+    }),
     ogTitle: z.string().optional(),
     ogDescription: z.string().optional(),
-    ogImageWidth: z.number().optional(),
-    ogImageHeight: z.number().optional(),
+    ogImageWidth: z.coerce.number().optional(),
+    ogImageHeight: z.coerce.number().optional(),
     ogImageAlt: z.string().optional(),
     twitterTitle: z.string().optional(),
     twitterDescription: z.string().optional(),
@@ -37,18 +52,19 @@ const updateSchema = z.object({
 class UpdateSeoSettingsController {
     async handle(req: Request, res: Response) {
         try {
-            // Validação e transformação
             const validatedData = await updateSchema.parseAsync({
                 ...req.body,
                 ogImageIndexes: req.body.ogImageIndexes || '[]',
-                twitterImageIndexes: req.body.twitterImageIndexes || '[]'
+                twitterImageIndexes: req.body.twitterImageIndexes || '[]',
+                keywordIndexes: req.body.keywordIndexes || '[]',
+                newKeywords: req.body.newKeywords || '[]'
             });
 
             // Processar uploads
             const ogImages = req.files?.['ogImages']?.map(file => file.filename) || [];
             const twitterImages = req.files?.['twitterImages']?.map(file => file.filename) || [];
 
-            // Validação de quantidade
+            // Validações
             if (ogImages.length > validatedData.ogImageIndexes.length) {
                 throw new Error('Mais imagens OG do que índices especificados');
             }
@@ -57,13 +73,16 @@ class UpdateSeoSettingsController {
                 throw new Error('Mais imagens Twitter do que índices especificados');
             }
 
-            // Montar objeto de atualização
+            if (validatedData.newKeywords.length > validatedData.keywordIndexes.length) {
+                throw new Error('Mais keywords do que índices especificados');
+            }
+
+            // Montar payload
             const updatePayload = {
                 sEOSettings_id: validatedData.sEOSettings_id,
                 page: validatedData.page,
                 title: validatedData.title,
                 description: validatedData.description,
-                keywords: validatedData.keywords ? JSON.parse(validatedData.keywords) : undefined,
                 ogTitle: validatedData.ogTitle,
                 ogDescription: validatedData.ogDescription,
                 ogImageWidth: validatedData.ogImageWidth,
@@ -75,10 +94,11 @@ class UpdateSeoSettingsController {
                 ogImages,
                 ogImageIndexes: validatedData.ogImageIndexes,
                 twitterImages,
-                twitterImageIndexes: validatedData.twitterImageIndexes
+                twitterImageIndexes: validatedData.twitterImageIndexes,
+                keywordIndexes: validatedData.keywordIndexes,
+                newKeywords: validatedData.newKeywords
             };
 
-            // Executar atualização
             const updateService = new UpdateSeoSettingsService();
             const result = await updateService.execute(updatePayload);
 

@@ -13,6 +13,10 @@ import { DeleteFilesExcelController } from "./controllers/configuration_blog/Del
 import { CreateSeoBlogController } from "./controllers/configuration_blog/seo/CreateSeoBlogController";
 import { GetSeoBlogPageController } from "./controllers/configuration_blog/seo/GetSeoBlogPageController";
 import { AllSeoBlogPageController } from "./controllers/configuration_blog/seo/AllSeoBlogPageController";
+import { UpdateSeoSettingsController } from "./controllers/configuration_blog/seo/UpdateSeoSettingsController";
+import { GetSeoUniqueController } from "./controllers/configuration_blog/seo/GetSeoUniqueController";
+import { DeleteKeywordController } from "./controllers/configuration_blog/seo/DeleteKeywordController";
+import { AddKeywordController } from "./controllers/configuration_blog/seo/AddKeywordController";
 
 // -- ROUTES MEDIAS SOCIAL --
 import { CreateMediaSocialBlogController } from "./controllers/configuration_blog/media_social/CreateMediaSocialBlogController";
@@ -156,7 +160,10 @@ import { ExistingSlidesBannerPageController } from "./controllers/marketing_publ
 import { ExistingSidebarBannerPageController } from "./controllers/marketing_publication/ExistingSidebarBannerPageController";
 import { DeleteIntervalBannerController } from "./controllers/marketing_publication/DeleteIntervalBannerController";
 import { DataCategoryPostController } from "./controllers/post/DataCategoryPostController";
-import { UpdateSeoSettingsController } from "./controllers/configuration_blog/seo/UpdateSeoSettingsController";
+import { DeleteOgImageController } from "./controllers/configuration_blog/seo/DeleteOgImageController";
+import { AddOgImagesController } from "./controllers/configuration_blog/seo/AddOgImagesController";
+import { AddTwitterImagesController } from "./controllers/configuration_blog/seo/AddTwitterImagesController";
+import { DeleteTwitterImageController } from "./controllers/configuration_blog/seo/DeleteTwitterImageController";
 
 
 const router = Router();
@@ -173,6 +180,13 @@ router.get('/configuration_blog/delete_all_files', isAuthenticated, new DeleteFi
 // -- SEO --
 router.post('/seo/create', isAuthenticated, upload_image.fields([{ name: 'ogImages', maxCount: 5 }, { name: 'twitterImages', maxCount: 5 }]), new CreateSeoBlogController().handle);
 router.put('/seo/update_seo', isAuthenticated, upload_image.fields([{ name: 'ogImages', maxCount: 5 }, { name: 'twitterImages', maxCount: 5 }]), new UpdateSeoSettingsController().handle);
+router.get('/seo/get_seo', isAuthenticated, new GetSeoUniqueController().handle);
+router.delete('/seo/keyword', isAuthenticated, new DeleteKeywordController().handle);
+router.post('/seo/keyword', isAuthenticated, new AddKeywordController().handle);
+router.post('/seo/og-images', isAuthenticated, upload_image.array('images'), new AddOgImagesController().handle);
+router.delete('/seo/og-image', isAuthenticated, new DeleteOgImageController().handle);
+router.post('/seo/twitter-images', isAuthenticated, upload_image.array('images'), new AddTwitterImagesController().handle);
+router.delete('/seo/twitter-image', isAuthenticated, new DeleteTwitterImageController().handle);
 router.get('/seo/get_page', new GetSeoBlogPageController().handle);
 router.get('/seo/all_seos', new AllSeoBlogPageController().handle);
 
