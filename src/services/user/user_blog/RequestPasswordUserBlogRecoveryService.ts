@@ -43,15 +43,20 @@ class RequestPasswordUserBlogRecoveryService {
 
     const requiredPath = path.join(__dirname, `../../emails_transacionais/recuperar_senha_user_blog.ejs`);
 
+    const domain_site = process.env.URL_SITE || 'http://localhost:3000';
+    const domain_api = process.env.URL_API || 'http://localhost:3333';
+
     const data = await ejs.renderFile(requiredPath, {
       name: user.name,
       id: recovery.id,
-      logo: infos_blog.logo,
-      name_blog: infos_blog.name_blog
+      logo: infos_blog?.logo,
+      name_blog: infos_blog?.name_blog,
+      domain_api: domain_api,
+      domain_site: domain_site
     });
 
     await transporter.sendMail({
-      from: `"${infos_blog.name_blog} " <${infos_blog.email_blog}>`,
+      from: `"${infos_blog?.name_blog} " <${infos_blog?.email_blog}>`,
       to: user.email,
       subject: "Recuperação de senha",
       html: data
