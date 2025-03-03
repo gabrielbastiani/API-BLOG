@@ -18,7 +18,7 @@ class BulkCategoryImportService {
             throw new Error("No worksheet found in Excel file");
         }
 
-        const categories = [];
+        const categories: any = [];
 
         worksheet.eachRow((row, rowNumber) => {
             if (rowNumber === 1) return;
@@ -100,7 +100,7 @@ class BulkCategoryImportService {
 
         const notificationsData = all_user_ids.map(user_id => ({
             user_id,
-            message: `Categoria(s) criada(s) via planilha pelo usuario ${users_crate.name}`,
+            message: `Categoria(s) criada(s) via planilha pelo usuario ${users_crate?.name}`,
             type: "category"
         }));
 

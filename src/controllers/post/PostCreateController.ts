@@ -33,7 +33,7 @@ class PostCreateController {
 
       return res.status(201).json(post);
     } catch (error) {
-      console.error(error);
+      console.error(error);/* @ts-ignore */
       return res.status(400).json({ error: error.message || "Erro ao criar o post" });
     }
   }

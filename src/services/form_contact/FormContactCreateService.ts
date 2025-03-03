@@ -78,14 +78,14 @@ class FormContactCreateService {
             name: name_user,
             menssage: menssage,
             subject: subject,
-            logo: infos_blog.logo,
-            name_blog: infos_blog.name_blog
+            logo: infos_blog?.logo,
+            name_blog: infos_blog?.name_blog
         });
 
         await transporter.sendMail({
-            from: `"${infos_blog.name_blog} " <${email_user}>`,
-            to: `${infos_blog.email_blog}`,
-            subject: `Alguém enviou uma mensagem para o ${infos_blog.name_blog}`,
+            from: `"${infos_blog?.name_blog} " <${email_user}>`,
+            to: `${infos_blog?.email_blog}`,
+            subject: `Alguém enviou uma mensagem para o ${infos_blog?.name_blog}`,
             html: data
         });
 

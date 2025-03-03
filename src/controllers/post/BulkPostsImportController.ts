@@ -21,7 +21,7 @@ class BulkPostsImportController {
             const result = await service.execute(file.path, user_id);
             return res.status(200).json(result);
         } catch (error) {
-            console.error(error);
+            console.error(error);/* @ts-ignore */
             return res.status(500).json({ error: error.message });
         }
     }

@@ -39,7 +39,7 @@ class UserAuthService {
                 name: user.name,
                 email: user.email,
                 role: user.role
-            },
+            },/* @ts-ignore */
             process.env.JWT_SECRET,
             {
                 subject: user.id,

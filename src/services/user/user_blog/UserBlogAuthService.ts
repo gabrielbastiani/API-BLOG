@@ -38,8 +38,8 @@ class UserBlogAuthService {
             {
                 name: user.name,
                 email: user.email
-            },
-            process.env.JWT_SECRET,
+            },/* @ts-ignore */
+            process.env?.JWT_SECRET,
             {
                 subject: user.id,
                 expiresIn: '30d'

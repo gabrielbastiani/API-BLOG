@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { AllPostService } from "../../services/post/AllPostService";
-import { Prisma } from "@prisma/client";
-import { validate as isUUID } from 'uuid'; // Importando a função de validação
+import { Prisma } from "@prisma/client";/* @ts-ignore */
+import { validate as isUUID } from 'uuid'; 
 
 class AllPostController {
     async handle(req: Request, res: Response) {

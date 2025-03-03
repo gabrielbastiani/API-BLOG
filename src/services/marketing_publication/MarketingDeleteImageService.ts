@@ -15,7 +15,7 @@ class MarketingDeleteImageService {
             }
         });
 
-        const imagePath = path.resolve(__dirname + '/' + '..' + '/' + '..' + '/' + '..' + '/' + 'images' + '/' + image_publication.image_url);
+        const imagePath = path.resolve(__dirname + '/' + '..' + '/' + '..' + '/' + '..' + '/' + 'images' + '/' + image_publication?.image_url);
         console.log(`Deleting image: ${imagePath}`);
         fs.unlink(imagePath, (err) => {
             if (err) {

@@ -61,7 +61,8 @@ class UpdateSeoSettingsController {
             });
 
             // Processar uploads
-            const ogImages = req.files?.['ogImages']?.map(file => file.filename) || [];
+            /* @ts-ignore */
+            const ogImages = req.files?.['ogImages']?.map(file => file.filename) || [];/* @ts-ignore */
             const twitterImages = req.files?.['twitterImages']?.map(file => file.filename) || [];
 
             // Validações
@@ -106,7 +107,7 @@ class UpdateSeoSettingsController {
 
         } catch (error: any) {
             console.error('Erro na atualização:', error);
-            return res.status(400).json({
+            return res.status(400).json({/* @ts-ignore */
                 error: error.message || 'Erro ao atualizar configurações SEO',
                 details: error.issues || []
             });

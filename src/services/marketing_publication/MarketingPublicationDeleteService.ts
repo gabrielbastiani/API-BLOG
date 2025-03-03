@@ -20,8 +20,8 @@ class MarketingPublicationDeleteService {
         });
 
         publications.forEach((marketingPublication) => {
-            if (marketingPublication.image_url) {
-                const imagePath = path.resolve(__dirname + '/' + '..' + '/' + '..' + '/' + '..' + '/' + 'images' + '/' + marketingPublication.image_url);
+            if (marketingPublication?.image_url) {
+                const imagePath = path.resolve(__dirname + '/' + '..' + '/' + '..' + '/' + '..' + '/' + 'images' + '/' + marketingPublication?.image_url);
                 console.log(`Deleting image: ${imagePath}`);
 
                 fs.unlink(imagePath, (err) => {

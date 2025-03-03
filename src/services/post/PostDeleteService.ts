@@ -20,8 +20,8 @@ class PostDeleteService {
         });
 
         posts.forEach((post) => {
-            if (post.image_post) {
-                const imagePath = path.resolve(__dirname + '/' + '..' + '/' + '..' + '/' + '..' + '/' + 'images' + '/' + post.image_post);
+            if (post?.image_post) {
+                const imagePath = path.resolve(__dirname + '/' + '..' + '/' + '..' + '/' + '..' + '/' + 'images' + '/' + post?.image_post);
                 console.log(`Deleting image: ${imagePath}`);
 
                 fs.unlink(imagePath, (err) => {

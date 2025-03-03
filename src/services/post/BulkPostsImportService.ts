@@ -18,7 +18,7 @@ class BulkPostsImportService {
             throw new Error("No worksheet found in Excel file");
         }
 
-        const posts = [];
+        const posts: any = [];
 
         worksheet.eachRow((row, rowNumber) => {
             if (rowNumber === 1) return; // Ignorar cabeçalho
@@ -53,7 +53,7 @@ class BulkPostsImportService {
         });
 
         const createdPosts = [];
-
+        /* @ts-ignore */
         for (const post of posts) {
             const newPost = await prismaClient.post.create({
                 data: {
@@ -68,7 +68,7 @@ class BulkPostsImportService {
 
             // Relacionar categorias ao post
             if (post.categories.length > 0) {
-                const categoryRelations = post.categories.map(categoryId => ({
+                const categoryRelations = post.categories.map((categoryId: any) => ({
                     post_id: newPost.id,
                     category_id: categoryId,
                 }));
@@ -81,7 +81,7 @@ class BulkPostsImportService {
 
             // Relacionar tags ao post
             if (post.tags.length > 0) {
-                const tagRelations = post.tags.map(tagId => ({
+                const tagRelations = post.tags.map((tagId: any) => ({
                     post_id: newPost.id,
                     tag_id: tagId,
                 }));

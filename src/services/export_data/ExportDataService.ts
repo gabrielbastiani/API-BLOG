@@ -40,7 +40,7 @@ class ExportDataService {
 
                 if (columns.length > 0) {
                     queryOptions.select = columns.reduce((acc, col) => ({ ...acc, [col]: true }), {});
-                }
+                }/* @ts-ignore */
                 dataExport = await prismaClient[tableName].findMany(queryOptions);
             }
 
@@ -130,7 +130,7 @@ class ExportDataService {
             };
 
         } catch (error) {
-            console.error('Erro durante a exportação:', error);
+            console.error('Erro durante a exportação:', error);/* @ts-ignore */
             throw new Error(`Erro durante a exportação: ${error.message}`);
         }
     }

@@ -15,7 +15,7 @@ class CategoryDeleteImageService {
             }
         });
 
-        const imagePath = path.resolve(__dirname + '/' + '..' + '/' + '..' + '/' + '..' + '/' + 'images' + '/' + image_category.image_category);
+        const imagePath = path.resolve(__dirname + '/' + '..' + '/' + '..' + '/' + '..' + '/' + 'images' + '/' + image_category?.image_category);
         console.log(`Deleting image: ${imagePath}`);
         fs.unlink(imagePath, (err) => {
             if (err) {

@@ -41,12 +41,12 @@ class CommentStatusService {
                 name: update_status.name_user,
                 post: update_status.post.title,
                 status: status,
-                logo: infos_blog.logo,
-                name_blog: infos_blog.name_blog
+                logo: infos_blog?.logo,
+                name_blog: infos_blog?.name_blog
             });
 
             await transporter.sendMail({
-                from: `"${infos_blog.name_blog} " <${infos_blog.email_blog}>`,
+                from: `"${infos_blog?.name_blog} " <${infos_blog?.email_blog}>`,/* @ts-ignore */
                 to: update_status.userBlog.email,
                 subject: `Status do seu comentario/resposta`,
                 html: data
@@ -59,12 +59,12 @@ class CommentStatusService {
                 name: update_status.name_user,
                 post: update_status.post.title,
                 status: status,
-                logo: infos_blog.logo,
-                name_blog: infos_blog.name_blog
+                logo: infos_blog?.logo,
+                name_blog: infos_blog?.name_blog
             });
 
             await transporter.sendMail({
-                from: `"${infos_blog.name_blog} " <${infos_blog.email_blog}>`,
+                from: `"${infos_blog?.name_blog} " <${infos_blog?.email_blog}>`,/* @ts-ignore */
                 to: update_status.userBlog.email,
                 subject: `Status do seu comentario/resposta`,
                 html: data
@@ -77,12 +77,12 @@ class CommentStatusService {
                 name: update_status.name_user,
                 post: update_status.post.title,
                 status: status,
-                logo: infos_blog.logo,
-                name_blog: infos_blog.name_blog
+                logo: infos_blog?.logo,
+                name_blog: infos_blog?.name_blog
             });
 
             await transporter.sendMail({
-                from: `"${infos_blog.name_blog} " <${infos_blog.email_blog}>`,
+                from: `"${infos_blog?.name_blog} " <${infos_blog?.email_blog}>`,/* @ts-ignore */
                 to: update_status.userBlog.email,
                 subject: `Status do seu comentario/resposta`,
                 html: data
@@ -90,7 +90,7 @@ class CommentStatusService {
 
             const threadUserComments = await prismaClient.comment.findMany({
                 where: {
-                    OR: [
+                    OR: [/* @ts-ignore */
                         { id: update_status.parentId },
                         { parentId: update_status.id },
                     ],
@@ -107,8 +107,8 @@ class CommentStatusService {
                 },
             });
 
-            const emailsToNotify = threadUserComments
-                .filter((user) => user.userBlog.email !== update_status.userBlog.email)
+            const emailsToNotify = threadUserComments/* @ts-ignore */
+                .filter((user) => user.userBlog.email !== update_status?.userBlog.email)/* @ts-ignore */
                 .map((user) => user.userBlog.email);
 
             const emailTemplatePath = path.join(__dirname, `../emails_transacionais/resposta_comentario.ejs`);
@@ -116,14 +116,14 @@ class CommentStatusService {
                 name: update_status.name_user,
                 post: update_status.post.title,
                 status: status,
-                logo: infos_blog.logo,
-                name_blog: infos_blog.name_blog
+                logo: infos_blog?.logo,
+                name_blog: infos_blog?.name_blog
             });
 
             await Promise.all(
                 emailsToNotify.map((email) =>
                     transporter.sendMail({
-                        from: `"${infos_blog.name_blog}" <${infos_blog.email_blog}>`,
+                        from: `"${infos_blog?.name_blog}" <${infos_blog?.email_blog}>`,
                         to: email,
                         subject: `Atualização no status de um comentário no qual você participou`,
                         html: emailData

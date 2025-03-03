@@ -87,13 +87,13 @@ class CommentCreateService {
         const data = await ejs.renderFile(requiredPath, {
             name: name_user,
             post: comment_create.post.title,
-            logo: infos_blog.logo,
-            name_blog: infos_blog.name_blog
+            logo: infos_blog?.logo,
+            name_blog: infos_blog?.name_blog
         });
 
         await transporter.sendMail({
-            from: `"${infos_blog.name_blog} " <${infos_blog.email_blog}>`,
-            to: comment_create.userBlog.email,
+            from: `"${infos_blog?.name_blog} " <${infos_blog?.email_blog}>`,/* @ts-ignore */
+            to: `${comment_create?.userBlog.email}`,
             subject: `Comentario/resposta em analise`,
             html: data
         });

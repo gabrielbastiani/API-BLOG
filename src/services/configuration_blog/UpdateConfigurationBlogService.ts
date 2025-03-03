@@ -46,8 +46,8 @@ class UpdateConfigurationBlogService {
         }
 
         if (logo) {
-            if (configurationBlog.logo) {
-                const imagePath = path.resolve(__dirname + '/' + '..' + '/' + '..' + '/' + '..' + '/' + 'images' + '/' + configurationBlog.logo);
+            if (configurationBlog?.logo) {
+                const imagePath = path.resolve(__dirname + '/' + '..' + '/' + '..' + '/' + '..' + '/' + 'images' + '/' + configurationBlog?.logo);
                 console.log(`Deleting image: ${imagePath}`);
                 fs.unlink(imagePath, (err) => {
                     if (err) {
@@ -61,8 +61,8 @@ class UpdateConfigurationBlogService {
         }
 
         if (favicon) {
-            if (configurationBlog.favicon) {
-                const imagePath = path.resolve(__dirname + '/' + '..' + '/' + '..' + '/' + '..' + '/' + 'images' + '/' + configurationBlog.favicon);
+            if (configurationBlog?.favicon) {
+                const imagePath = path.resolve(__dirname + '/' + '..' + '/' + '..' + '/' + '..' + '/' + 'images' + '/' + configurationBlog?.favicon);
                 console.log(`Deleting image: ${imagePath}`);
                 fs.unlink(imagePath, (err) => {
                     if (err) {

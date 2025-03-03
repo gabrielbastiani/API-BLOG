@@ -103,14 +103,14 @@ class UserBlogCreateService {
 
         const data = await ejs.renderFile(requiredPath, {
             name: name,
-            logo: infos_blog.logo,
-            name_blog: infos_blog.name_blog
+            logo: infos_blog?.logo,
+            name_blog: infos_blog?.name_blog
         });
 
-        await transporter.sendMail({
-            from: `"${infos_blog.name_blog} " <${infos_blog.email_blog}>`,
-            to: infos_blog.email_blog,
-            subject: `Novo usuario do ${infos_blog.name_blog}`,
+        transporter.sendMail({
+            from: `"${infos_blog?.name_blog} " <${infos_blog?.email_blog}>`,
+            to: `${infos_blog?.email_blog}`,
+            subject: `Novo usuario do ${infos_blog?.name_blog}`,
             html: data
         });
 

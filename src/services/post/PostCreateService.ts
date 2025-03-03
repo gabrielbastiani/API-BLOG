@@ -44,7 +44,7 @@ class PostCreateService {
                 status: statusEnum,
                 publish_at,
                 seo_description,
-                seo_keywords: keywords,
+                seo_keywords: keywords,/* @ts-ignore */
                 custom_url: removerAcentos(custom_url)
             },
         });

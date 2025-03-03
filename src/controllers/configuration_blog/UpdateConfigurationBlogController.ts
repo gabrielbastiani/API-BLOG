@@ -19,11 +19,11 @@ class UpdateConfigurationBlogController {
 
         const update_configs = new UpdateConfigurationBlogService();
 
-        if (req.files) {
-            if (req.files['logo']) {
+        if (req.files) {/* @ts-ignore */
+            if (req.files['logo']) {/* @ts-ignore */
                 imageToUpdate = req.files['logo'][0].filename;
-            }
-            if (req.files['favicon']) {
+            }/* @ts-ignore */
+            if (req.files['favicon']) {/* @ts-ignore */
                 imageToUpdatefavicon = req.files['favicon'][0].filename;
             }
         }

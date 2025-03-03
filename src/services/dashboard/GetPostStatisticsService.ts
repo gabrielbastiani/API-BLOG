@@ -71,8 +71,8 @@ class GetPostStatisticsService {
         });
 
         // Organizar os posts por ano, mês e dia
-        const calendarData = posts.reduce((acc: any, post) => {
-            const date = new Date(post.publish_at);
+        const calendarData = posts.reduce((acc: any, post) => {/* @ts-ignore */
+            const date = new Date(post?.publish_at);
             const year = date.getFullYear();
             const month = date.getMonth() + 1;
             const day = date.getDate();

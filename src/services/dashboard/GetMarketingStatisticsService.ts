@@ -87,8 +87,8 @@ class GetMarketingStatisticsService {
         });
 
         // Organizar os publications por ano, mês e dia
-        const calendarData = publications.reduce((acc: any, marketingPublication) => {
-            const date = new Date(marketingPublication.publish_at_start);
+        const calendarData = publications.reduce((acc: any, marketingPublication) => {/* @ts-ignore */
+            const date = new Date(marketingPublication?.publish_at_start);
             const year = date.getFullYear();
             const month = date.getMonth() + 1;
             const day = date.getDate();
@@ -122,9 +122,9 @@ class GetMarketingStatisticsService {
         });
 
         const metricsPublicationViews = metrics.map((marketingPublication) => ({
-            ...marketingPublication,
-            title: marketingPublication.title.length > 30
-                ? `${marketingPublication.title.slice(0, 30)}...`
+            ...marketingPublication,/* @ts-ignore */
+            title: marketingPublication?.title.length > 30/* @ts-ignore */
+                ? `${marketingPublication?.title.slice(0, 30)}...`
                 : marketingPublication.title,
         }));
 

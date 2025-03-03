@@ -41,7 +41,7 @@ class PostPublishScheduler {
                 });
 
                 // Envia e-mails para cada post publicado
-                for (const post of postsToPublish) {
+                for (const post of postsToPublish) {/* @ts-ignore */
                     await this.sendEmail(post.title, post.publish_at);
                 }
             }
@@ -57,15 +57,15 @@ class PostPublishScheduler {
 
             const data = await ejs.renderFile(requiredPath, {
                 title: postTitle,
-                logo: infos_blog.logo,
-                name_blog: infos_blog.name_blog,
+                logo: infos_blog?.logo,
+                name_blog: infos_blog?.name_blog,
                 start: moment(postPublish_at).format('DD/MM/YYYY HH:mm')
             });
 
             await this.transporter.sendMail({
-                from: `"${infos_blog.name_blog} " <${infos_blog.email_blog}>`,
-                to: `${infos_blog.email_blog}`,
-                subject: `Post programado publicado no ${infos_blog.name_blog}`,
+                from: `"${infos_blog?.name_blog} " <${infos_blog?.email_blog}>`,
+                to: `${infos_blog?.email_blog}`,
+                subject: `Post programado publicado no ${infos_blog?.name_blog}`,
                 html: data
             });
         } catch (error) {

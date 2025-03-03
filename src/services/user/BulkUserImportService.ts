@@ -20,7 +20,7 @@ class BulkUserImportService {
             throw new Error("No worksheet found in Excel file");
         }
 
-        const users = [];
+        const users: { name: string; slug_name: any; email: string; password: string; role: "EMPLOYEE" | "ADMIN"; }[] = [];
 
         worksheet.eachRow((row, rowNumber) => {
             if (rowNumber === 1) return;
@@ -88,7 +88,7 @@ class BulkUserImportService {
 
         const notificationsData = all_user_ids.map(user_id => ({
             user_id,
-            message: `Usuário(s) criado(s) via planilha pelo usuario ${users_crate.name}`,
+            message: `Usuário(s) criado(s) via planilha pelo usuario ${users_crate?.name}`,
             type: "user"
         }));
 

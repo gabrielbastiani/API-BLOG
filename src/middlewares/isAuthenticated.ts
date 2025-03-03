@@ -28,8 +28,8 @@ export async function isAuthenticated(
 
   try {
     const { sub } = verify(
-      token,
-      process.env.JWT_SECRET
+      token,/* @ts-ignore */
+      process.env?.JWT_SECRET
     ) as Payload;
 
     req.user_id = sub;

@@ -19,7 +19,7 @@ class BulkTagsImportService {
             throw new Error("No worksheet found in Excel file");
         }
 
-        const tags = [];
+        const tags: { tag_name: string; slug_tag_name: any; }[] = [];
 
         worksheet.eachRow((row, rowNumber) => {
             if (rowNumber === 1) return;
@@ -63,7 +63,7 @@ class BulkTagsImportService {
 
         const notificationsData = all_user_ids.map(user_id => ({
             user_id,
-            message: `Tag(s) criada(s) via planilha pelo usuario ${users_crate.name}`,
+            message: `Tag(s) criada(s) via planilha pelo usuario ${users_crate?.name}`,
             type: "user"
         }));
 

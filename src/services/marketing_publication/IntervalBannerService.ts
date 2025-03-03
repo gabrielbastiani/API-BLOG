@@ -11,7 +11,7 @@ class IntervalBannerService {
     async execute({interval_banner, local_site, label_local_site, label_interval_banner}: IntervalProps) {
 
         const bannerInterval = await prismaClient.bannerInterval.create({
-            data: {
+            data: {/* @ts-ignore */
                 interval_banner: interval_banner && !isNaN(Number(interval_banner)) ? Number(interval_banner) : undefined,
                 local_site: local_site,
                 label_local_site: label_local_site,

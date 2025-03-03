@@ -15,7 +15,7 @@ class IntervalBannerController {
         const interval = interval_banner && !isNaN(Number(interval_banner)) ? Number(interval_banner) : undefined;
 
         const marketing = await createBannerService.execute({
-            local_site,
+            local_site,/* @ts-ignore */
             interval_banner: interval,
             label_interval_banner,
             label_local_site

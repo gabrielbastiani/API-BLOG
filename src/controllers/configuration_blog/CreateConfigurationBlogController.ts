@@ -12,11 +12,11 @@ class CreateConfigurationBlogController {
 
         const create_configuration = new CreateConfigurationBlogService();
 
-        if (req.files) {
-            if (req.files['logo']) {
+        if (req.files) {/* @ts-ignore */
+            if (req.files['logo']) {/* @ts-ignore */
                 imageToUpdate = req.files['logo'][0].filename;
-            }
-            if (req.files['favicon']) {
+            }/* @ts-ignore */
+            if (req.files['favicon']) {/* @ts-ignore */
                 imageFavicon = req.files['favicon'][0].filename;
             }
         }

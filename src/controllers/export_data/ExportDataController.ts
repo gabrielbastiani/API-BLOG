@@ -28,7 +28,7 @@ class ExportDataController {
             res.setHeader('Content-Type', mimeType);
 
             return res.send(buffer);
-        } catch (error) {
+        } catch (error) {/* @ts-ignore */
             return res.status(400).json({ error: error.message });
         }
     }

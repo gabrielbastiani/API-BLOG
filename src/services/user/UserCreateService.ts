@@ -96,14 +96,14 @@ class UserCreateService {
 
             const data = await ejs.renderFile(requiredPath, {
                 name: user_create.name,
-                name_blog: infos_blog.name_blog,
-                logo: infos_blog.logo
+                name_blog: infos_blog?.name_blog,
+                logo: infos_blog?.logo
             });
 
             await transporter.sendMail({
-                from: `"${infos_blog.name_blog} " <${infos_blog.email_blog}>`,
-                to: `${infos_blog.email_blog}`,
-                subject: `Novo usuario se cadastrando no CMS do ${infos_blog.name_blog}`,
+                from: `"${infos_blog?.name_blog} " <${infos_blog?.email_blog}>`,
+                to: `${infos_blog?.email_blog}`,
+                subject: `Novo usuario se cadastrando no CMS do ${infos_blog?.name_blog}`,
                 html: data
             });
 
@@ -116,14 +116,14 @@ class UserCreateService {
                     name: user_create.name,
                     email: user_create.email,
                     password: password,
-                    name_blog: infos_blog.name_blog,
-                    logo: infos_blog.logo
+                    name_blog: infos_blog?.name_blog,
+                    logo: infos_blog?.logo
                 });
 
                 await transporter.sendMail({
-                    from: `"${infos_blog.name_blog} " <${infos_blog.email_blog}>`,
+                    from: `"${infos_blog?.name_blog} " <${infos_blog?.email_blog}>`,
                     to: user_create.email,
-                    subject: `Dados de acesso CMS do ${infos_blog.name_blog}`,
+                    subject: `Dados de acesso CMS do ${infos_blog?.name_blog}`,
                     html: data
                 });
 
@@ -159,14 +159,14 @@ class UserCreateService {
 
         const data = await ejs.renderFile(requiredPath, {
             name: user_create_super_admin.name,
-            logo: infos_blog.logo,
-            name_blog: infos_blog.name_blog
+            logo: infos_blog?.logo,
+            name_blog: infos_blog?.name_blog
         });
 
         await transporter.sendMail({
-            from: `"${infos_blog.name_blog} " <${infos_blog.email_blog}>`,
+            from: `"${infos_blog?.name_blog} " <${infos_blog?.email_blog}>`,
             to: user_create_super_admin.email,
-            subject: `Novo super administrador se cadastrando no CMS do ${infos_blog.name_blog}`,
+            subject: `Novo super administrador se cadastrando no CMS do ${infos_blog?.name_blog}`,
             html: data
         });
 

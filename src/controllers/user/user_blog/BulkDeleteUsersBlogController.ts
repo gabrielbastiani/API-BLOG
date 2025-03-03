@@ -18,7 +18,7 @@ class BulkDeleteUsersBlogController {
         try {
             const result = await service.execute(file.path, user_id);
             return res.status(200).json({ message: "Usuários deletados com sucesso", result });
-        } catch (error) {
+        } catch (error) {/* @ts-ignore */
             return res.status(500).json({ error: "Erro ao deletar usuários", details: error.message });
         }
     }

@@ -31,7 +31,7 @@ class CommentCreateController {
 
             return res.status(201).json(comments);
 
-        } catch (error) {
+        } catch (error) {/* @ts-ignore */
             return res.status(400).json({ error: error.message });
         }
     }

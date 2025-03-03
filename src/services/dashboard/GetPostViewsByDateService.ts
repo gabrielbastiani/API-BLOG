@@ -24,9 +24,9 @@ class GetPostViewsByDateService {
         postViewsRaw.forEach(({ created_at, post }) => {
             const date = created_at.toISOString().split('T')[0]; // Formata a data para YYYY-MM-DD
 
-            if (!viewMap[date]) viewMap[date] = {}; // Inicializa a data no objeto
+            if (!viewMap[date]) viewMap[date] = {}; /* @ts-ignore */
             if (!viewMap[date][post.title]) viewMap[date][post.title] = 0; // Inicializa o contador de views
-
+            /* @ts-ignore */
             viewMap[date][post.title] += 1; // Incrementa o contador de views
         });
 

@@ -47,8 +47,8 @@ class StartMarketingPublicationScheduler {
                 try {
                     const start = moment(pub.publish_at_start).format('DD/MM/YYYY HH:mm');
                     const end = moment(pub.publish_at_end).format('DD/MM/YYYY HH:mm');
-                    
-                    await this.sendEmail(pub.title, start, end);
+                    /* @ts-ignore */
+                    await this.sendEmail(pub?.title, start, end);
                     console.log(`Iniciada publicidade: ${pub.title}`);
                 } catch (emailError) {
                     console.error(`Erro ao enviar email para ${pub.title}:`, emailError);
@@ -69,15 +69,15 @@ class StartMarketingPublicationScheduler {
 
     private async sendEmail(title: string, start: string, end: string) {
         const infos_blog = await prismaClient.configurationBlog.findFirst();
-        const name_blog = infos_blog.name_blog;
-        const logo = infos_blog.logo;
+        const name_blog = infos_blog?.name_blog;
+        const logo = infos_blog?.logo;
         const emailTemplatePath = path.join(__dirname, "../emails_transacionais/publicidade_programada.ejs");
 
         const htmlContent = await ejs.renderFile(emailTemplatePath, { title, start, end, name_blog, logo });
 
         await this.transporter.sendMail({
-            from: `"${infos_blog.name_blog} " <${infos_blog.email_blog}>`,
-            to: `${infos_blog.email_blog}`,
+            from: `"${infos_blog?.name_blog} " <${infos_blog?.email_blog}>`,
+            to: `${infos_blog?.email_blog}`,
             subject: "Publicidade Programada Iniciada",
             html: htmlContent,
         });

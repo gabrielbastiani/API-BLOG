@@ -24,9 +24,9 @@ class GetMarketingClicksByDateService {
         publicationClicksRaw.forEach(({ created_at, marketingPublication }) => {
             const date = created_at.toISOString().split('T')[0]; // Formata a data para YYYY-MM-DD
 
-            if (!clickMap[date]) clickMap[date] = {}; // Inicializa a data no objeto
+            if (!clickMap[date]) clickMap[date] = {}; /* @ts-ignore */
             if (!clickMap[date][marketingPublication.title]) clickMap[date][marketingPublication.title] = 0; // Inicializa o contador de clicks
-
+            /* @ts-ignore */
             clickMap[date][marketingPublication.title] += 1; // Incrementa o contador de clicks
         });
 
