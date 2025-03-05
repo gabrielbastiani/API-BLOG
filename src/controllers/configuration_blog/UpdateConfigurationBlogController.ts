@@ -11,7 +11,8 @@ class UpdateConfigurationBlogController {
             phone,
             email_blog,
             author_blog,
-            about_author_blog
+            about_author_blog,
+            privacy_policies
         } = req.body;
 
         let imageToUpdate = req.body.logo;
@@ -37,7 +38,8 @@ class UpdateConfigurationBlogController {
             phone,
             email_blog,
             author_blog,
-            about_author_blog
+            about_author_blog,
+            privacy_policies
         });
 
         return res.json(configs);

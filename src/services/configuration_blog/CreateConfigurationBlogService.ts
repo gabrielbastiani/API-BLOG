@@ -19,7 +19,8 @@ class CreateConfigurationBlogService {
                 phone: "(99) 99999-9999",
                 description_blog: "Escreva uma descrição para o blog, do que se trata...",
                 author_blog: "Nome do(a) dono(a) do blog",
-                about_author_blog: "Sobre o autor do blog"
+                about_author_blog: "Sobre o autor do blog",
+                privacy_policies: "Escrveva aqui seu texto das suas politicas de privacidades focado na lei LGPD"
             }
         })
 

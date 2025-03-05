@@ -12,6 +12,7 @@ interface ConfigBlog {
     email_blog?: string;
     author_blog?: string;
     about_author_blog?: string;
+    privacy_policies?: string;
 }
 
 class UpdateConfigurationBlogService {
@@ -24,7 +25,8 @@ class UpdateConfigurationBlogService {
         phone,
         email_blog,
         author_blog,
-        about_author_blog
+        about_author_blog,
+        privacy_policies
     }: ConfigBlog) {
 
         const configurationBlog = await prismaClient.configurationBlog.findUnique({
@@ -35,6 +37,10 @@ class UpdateConfigurationBlogService {
 
         if (name_blog) {
             dataToUpdate.name_blog = name_blog;
+        }
+
+        if (privacy_policies) {
+            dataToUpdate.privacy_policies = privacy_policies;
         }
 
         if (description_blog) {
