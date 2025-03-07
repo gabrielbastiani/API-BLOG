@@ -74,12 +74,17 @@ class FormContactCreateService {
 
         const requiredPath = path.join(__dirname, `../emails_transacionais/criacao_de_mensagem_formulario.ejs`);
 
+        const domain_site = process.env.URL_SITE || 'http://localhost:3000';
+        const domain_api = process.env.URL_API || 'http://localhost:3333';
+
         const data = await ejs.renderFile(requiredPath, {
             name: name_user,
             menssage: menssage,
             subject: subject,
             logo: infos_blog?.logo,
-            name_blog: infos_blog?.name_blog
+            name_blog: infos_blog?.name_blog,
+            domain_site: domain_site,
+            domain_api: domain_api
         });
 
         await transporter.sendMail({

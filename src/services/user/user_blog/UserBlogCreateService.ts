@@ -101,10 +101,15 @@ class UserBlogCreateService {
 
         const requiredPath = path.join(__dirname, `../../emails_transacionais/criacao_de_usuario_blog.ejs`);
 
+        const domain_site = process.env.URL_SITE || 'http://localhost:3000';
+        const domain_api = process.env.URL_API || 'http://localhost:3333';
+
         const data = await ejs.renderFile(requiredPath, {
             name: name,
             logo: infos_blog?.logo,
-            name_blog: infos_blog?.name_blog
+            name_blog: infos_blog?.name_blog,
+            domain_site: domain_site,
+            domain_api: domain_api
         });
 
         transporter.sendMail({

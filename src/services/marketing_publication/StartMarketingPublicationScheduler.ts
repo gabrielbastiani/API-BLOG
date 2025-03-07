@@ -68,12 +68,16 @@ class StartMarketingPublicationScheduler {
     }
 
     private async sendEmail(title: string, start: string, end: string) {
+        const domain_sitee = process.env.URL_SITE || 'http://localhost:3000';
+        const domain_apii = process.env.URL_API || 'http://localhost:3333';
         const infos_blog = await prismaClient.configurationBlog.findFirst();
         const name_blog = infos_blog?.name_blog;
         const logo = infos_blog?.logo;
+        const domain_site = domain_sitee;
+        const domain_api = domain_apii;
         const emailTemplatePath = path.join(__dirname, "../emails_transacionais/publicidade_programada.ejs");
 
-        const htmlContent = await ejs.renderFile(emailTemplatePath, { title, start, end, name_blog, logo });
+        const htmlContent = await ejs.renderFile(emailTemplatePath, { title, start, end, name_blog, logo, domain_site, domain_api });
 
         await this.transporter.sendMail({
             from: `"${infos_blog?.name_blog} " <${infos_blog?.email_blog}>`,

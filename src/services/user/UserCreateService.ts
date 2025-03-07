@@ -94,10 +94,15 @@ class UserCreateService {
             const infos_blog = await prismaClient.configurationBlog.findFirst();
             const requiredPath = path.join(__dirname, `../emails_transacionais/criacao_de_employee.ejs`);
 
+            const domain_site = process.env.URL_SITE || 'http://localhost:3000';
+            const domain_api = process.env.URL_API || 'http://localhost:3333';
+
             const data = await ejs.renderFile(requiredPath, {
                 name: user_create.name,
                 name_blog: infos_blog?.name_blog,
-                logo: infos_blog?.logo
+                logo: infos_blog?.logo,
+                domain_site: domain_site,
+                domain_api: domain_api
             });
 
             await transporter.sendMail({
@@ -112,12 +117,17 @@ class UserCreateService {
                 const infos_blog = await prismaClient.configurationBlog.findFirst();
                 const requiredPath = path.join(__dirname, `../emails_transacionais/data_login_user.ejs`);
 
+                const domain_site = process.env.URL_SITE || 'http://localhost:3000';
+                const domain_api = process.env.URL_API || 'http://localhost:3333';
+
                 const data = await ejs.renderFile(requiredPath, {
                     name: user_create.name,
                     email: user_create.email,
                     password: password,
                     name_blog: infos_blog?.name_blog,
-                    logo: infos_blog?.logo
+                    logo: infos_blog?.logo,
+                    domain_site: domain_site,
+                    domain_api: domain_api
                 });
 
                 await transporter.sendMail({
@@ -157,10 +167,15 @@ class UserCreateService {
 
         const requiredPath = path.join(__dirname, `../emails_transacionais/criacao_de_super_administrador.ejs`);
 
+        const domain_site = process.env.URL_SITE || 'http://localhost:3000';
+        const domain_api = process.env.URL_API || 'http://localhost:3333';
+
         const data = await ejs.renderFile(requiredPath, {
             name: user_create_super_admin.name,
             logo: infos_blog?.logo,
-            name_blog: infos_blog?.name_blog
+            name_blog: infos_blog?.name_blog,
+            domain_site: domain_site,
+            domain_api: domain_api
         });
 
         await transporter.sendMail({
