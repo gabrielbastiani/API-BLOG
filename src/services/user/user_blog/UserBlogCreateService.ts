@@ -101,8 +101,8 @@ class UserBlogCreateService {
 
         const requiredPath = path.join(__dirname, `../../emails_transacionais/criacao_de_usuario_blog.ejs`);
 
-        const domain_site = process.env.URL_SITE || 'http://localhost:3000';
-        const domain_api = process.env.URL_API || 'http://localhost:3333';
+        const domain_site = process.env.URL_SITE;
+        const domain_api = process.env.URL_API;
 
         const data = await ejs.renderFile(requiredPath, {
             name: name,

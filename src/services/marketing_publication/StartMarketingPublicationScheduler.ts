@@ -68,8 +68,8 @@ class StartMarketingPublicationScheduler {
     }
 
     private async sendEmail(title: string, start: string, end: string) {
-        const domain_sitee = process.env.URL_SITE || 'http://localhost:3000';
-        const domain_apii = process.env.URL_API || 'http://localhost:3333';
+        const domain_sitee = process.env.URL_SITE;
+        const domain_apii = process.env.URL_API;
         const infos_blog = await prismaClient.configurationBlog.findFirst();
         const name_blog = infos_blog?.name_blog;
         const logo = infos_blog?.logo;

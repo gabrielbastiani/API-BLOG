@@ -35,8 +35,8 @@ class CommentStatusService {
 
         const infos_blog = await prismaClient.configurationBlog.findFirst();
 
-        const domain_site = process.env.URL_SITE || 'http://localhost:3000';
-        const domain_api = process.env.URL_API || 'http://localhost:3333';
+        const domain_site = process.env.URL_SITE;
+        const domain_api = process.env.URL_API
 
         if (status === "Pendente") {
             const requiredPath = path.join(__dirname, `../emails_transacionais/status_comentario_artigo.ejs`);
@@ -79,8 +79,8 @@ class CommentStatusService {
         }
 
         if (status === "Aprovado") {
-            const domain_sitee = process.env.URL_SITE || 'http://localhost:3000';
-            const domain_apii = process.env.URL_API || 'http://localhost:3333';
+            const domain_sitee = process.env.URL_SITE;
+            const domain_apii = process.env.URL_API;
             const requiredPath = path.join(__dirname, `../emails_transacionais/status_comentario_artigo.ejs`);
             const data = await ejs.renderFile(requiredPath, {
                 name: update_status.name_user,
@@ -122,8 +122,8 @@ class CommentStatusService {
                 .filter((user) => user.userBlog.email !== update_status?.userBlog.email)/* @ts-ignore */
                 .map((user) => user.userBlog.email);
 
-                const domain_site = process.env.URL_SITE || 'http://localhost:3000';
-                const domain_api = process.env.URL_API || 'http://localhost:3333';
+                const domain_site = process.env.URL_SITE;
+                const domain_api = process.env.URL_API;
 
             const emailTemplatePath = path.join(__dirname, `../emails_transacionais/resposta_comentario.ejs`);
             const emailData = await ejs.renderFile(emailTemplatePath, {

@@ -94,8 +94,8 @@ class UserCreateService {
             const infos_blog = await prismaClient.configurationBlog.findFirst();
             const requiredPath = path.join(__dirname, `../emails_transacionais/criacao_de_employee.ejs`);
 
-            const domain_site = process.env.URL_SITE || 'http://localhost:3000';
-            const domain_api = process.env.URL_API || 'http://localhost:3333';
+            const domain_site = process.env.URL_SITE;
+            const domain_api = process.env.URL_API;
 
             const data = await ejs.renderFile(requiredPath, {
                 name: user_create.name,
@@ -117,8 +117,8 @@ class UserCreateService {
                 const infos_blog = await prismaClient.configurationBlog.findFirst();
                 const requiredPath = path.join(__dirname, `../emails_transacionais/data_login_user.ejs`);
 
-                const domain_site = process.env.URL_SITE || 'http://localhost:3000';
-                const domain_api = process.env.URL_API || 'http://localhost:3333';
+                const domain_site = process.env.URL_SITE;
+                const domain_api = process.env.URL_API;
 
                 const data = await ejs.renderFile(requiredPath, {
                     name: user_create.name,
@@ -167,8 +167,8 @@ class UserCreateService {
 
         const requiredPath = path.join(__dirname, `../emails_transacionais/criacao_de_super_administrador.ejs`);
 
-        const domain_site = process.env.URL_SITE || 'http://localhost:3000';
-        const domain_api = process.env.URL_API || 'http://localhost:3333';
+        const domain_site = process.env.URL_SITE;
+        const domain_api = process.env.URL_API;
 
         const data = await ejs.renderFile(requiredPath, {
             name: user_create_super_admin.name,

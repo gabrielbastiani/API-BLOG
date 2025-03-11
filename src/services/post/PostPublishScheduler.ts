@@ -51,8 +51,8 @@ class PostPublishScheduler {
     }
 
     private async sendEmail(postTitle: string, postPublish_at: Date) {
-        const domain_site = process.env.URL_SITE || 'http://localhost:3000';
-        const domain_api = process.env.URL_API || 'http://localhost:3333';
+        const domain_site = process.env.URL_SITE;
+        const domain_api = process.env.URL_API;
         try {
             const infos_blog = await prismaClient.configurationBlog.findFirst();
             const requiredPath = path.join(__dirname, `../emails_transacionais/post_programado.ejs`);
