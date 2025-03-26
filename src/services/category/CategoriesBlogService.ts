@@ -10,22 +10,27 @@ class CategoriesBlogService {
       orderBy: { created_at: "desc" },
       include: {
         children: {
+          where: { status: StatusCategory.Disponivel },
           include: {
             parent: {
               include: {
                 children: {
+                  where: { status: StatusCategory.Disponivel },
                   include: {
                     parent: {
                       include: {
                         children: {
+                          where: { status: StatusCategory.Disponivel },
                           include: {
                             parent: {
                               include: {
                                 children: {
+                                  where: { status: StatusCategory.Disponivel },
                                   include: {
                                     parent: {
                                       include: {
                                         children: {
+                                          where: { status: StatusCategory.Disponivel },
                                           include: {
                                             parent: true
                                           }
@@ -50,7 +55,6 @@ class CategoriesBlogService {
     });
 
     return all_categories;
-
   }
 }
 

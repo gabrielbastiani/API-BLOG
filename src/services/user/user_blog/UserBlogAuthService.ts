@@ -11,7 +11,8 @@ class UserBlogAuthService {
     async execute({ email, password }: AuthRequest) {
         const user = await prismaClient.userBlog.findFirst({
             where: {
-                email: email
+                email: email,
+                status: "Disponivel"
             }
         })
 

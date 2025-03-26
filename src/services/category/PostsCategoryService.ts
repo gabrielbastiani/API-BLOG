@@ -24,6 +24,11 @@ class PostsCategoryService {
             },
           },
         },
+        {
+          status: {
+            notIn: ["Programado", "Indisponivel"]
+          }
+        },
         ...(search
           ? [
             {
