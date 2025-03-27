@@ -56,8 +56,6 @@ class EndMarketingPublicationScheduler {
                     const end = moment(pub.publish_at_end).format('DD/MM/YYYY HH:mm');
                     /* @ts-ignore */
                     await this.sendEmail(pub.title, start, end);
-
-                    console.log(`Encerrada publicidade: ${pub.title}`);
                 } catch (emailError) {
                     console.error(`Erro ao processar encerramento de ${pub.title}:`, emailError);
                 }

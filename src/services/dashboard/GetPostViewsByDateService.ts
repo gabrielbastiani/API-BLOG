@@ -37,8 +37,6 @@ class GetPostViewsByDateService {
             });
         });
 
-        console.log(formattedData)
-
         return formattedData;
 
     }

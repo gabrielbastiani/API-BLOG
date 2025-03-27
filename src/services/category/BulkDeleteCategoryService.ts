@@ -50,8 +50,6 @@ class BulkDeleteCategoryService {
             categories.forEach((category) => {
                 if (category.image_category) {
                     const imagePath = path.resolve(__dirname + '/' + '..' + '/' + '..' + '/' + '..' + '/' + 'images' + '/' + category.image_category);
-                    console.log(`Deleting image: ${imagePath}`);
-
                     fs.unlink(imagePath, (err) => {
                         if (err) {
                             console.error(`Failed to delete image for category ${category.id}: ${err.message}`);

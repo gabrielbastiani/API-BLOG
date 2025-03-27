@@ -37,8 +37,6 @@ class GetMarketingClicksByDateService {
             });
         });
 
-        console.log(formattedData)
-
         return formattedData;
 
     }

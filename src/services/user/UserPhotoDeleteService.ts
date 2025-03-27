@@ -16,7 +16,6 @@ class UserPhotoDeleteService {
         });
 
         const imagePath = path.resolve(__dirname + '/' + '..' + '/' + '..' + '/' + '..' + '/' + 'images' + '/' + user_photo?.image_user);
-        console.log(`Deleting image: ${imagePath}`);
         fs.unlink(imagePath, (err) => {
             if (err) {
                 console.error(`Failed to delete old image: ${err.message}`);

@@ -18,8 +18,6 @@ class CreateMarketingPublicationController {
             popup_time
         } = req.body;
 
-        console.log(req.body)
-
         let imageToUpdate = req.body.image_url;
         if (!req.body.image_url && req.file) {
             imageToUpdate = req.file.filename;

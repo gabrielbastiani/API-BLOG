@@ -58,7 +58,6 @@ class UserBlogUpdateDataService {
         if (image_user) {
             if (userBlog.image_user) {
                 const imagePath = path.resolve(__dirname + '/' + '..' + '/' + '..' + '/' + '..' + '/' + '..' + '/' + 'images' + '/' + userBlog.image_user);
-                console.log(`Deleting image: ${imagePath}`);
                 fs.unlink(imagePath, (err) => {
                     if (err) {
                         console.error(`Failed to delete old image: ${err.message}`);

@@ -144,10 +144,8 @@ class UpdateSeoSettingsService {
                 if (filename) {
                     try {
                         const imagePath = path.join(IMAGE_UPLOAD_DIR, filename);
-                        console.log(`[${type}] Tentando deletar: ${imagePath}`); // Log detalhado
                         await fs.access(imagePath);
                         await fs.unlink(imagePath);
-                        console.log(`[${type}] ✓ Arquivo ${filename} deletado`);
                     } catch (error: any) {
                         if (error.code === 'ENOENT') {
                             console.log(`[${type}] ! Arquivo ${filename} não encontrado`);

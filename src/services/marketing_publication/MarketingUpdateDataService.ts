@@ -87,7 +87,6 @@ class MarketingUpdateDataService {
         if (image_url) {
             if (marketingPublication?.image_url) {
                 const imagePath = path.resolve(__dirname + '/' + '..' + '/' + '..' + '/' + '..' + '/' + 'images' + '/' + marketingPublication?.image_url);
-                console.log(`Deleting image: ${imagePath}`);
                 fs.unlink(imagePath, (err) => {
                     if (err) {
                         console.error(`Failed to delete old image: ${err.message}`);
