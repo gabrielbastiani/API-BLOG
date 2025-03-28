@@ -2,6 +2,7 @@ import { Router } from "express";
 import multer from 'multer';
 import uploadConfig from './config/multer';
 import { isAuthenticated } from "./middlewares/isAuthenticated";
+import { isAuthenticatedBlog } from "./middlewares/isAuthenticatedBlog";
 
 // -- ROUTES CONFIGURATION BLOG --
 import { CreateConfigurationBlogController } from "./controllers/configuration_blog/CreateConfigurationBlogController";
@@ -299,9 +300,9 @@ router.put('/tag/update', isAuthenticated, new UpdateTagController().handle);
 // -- ROUTES BLOG --
 router.post('/user/user_blog/create', upload_image.single('file'), new UserBlogCreateController().handle);
 router.post('/user/user_blog/session', new UserBlogAuthController().handle);
-router.get('/user/user_blog/me', isAuthenticated, new UserBlogDetailController().handle);
+router.get('/user/user_blog/me', isAuthenticatedBlog, new UserBlogDetailController().handle);
 router.get('/user/user_blog/all_users_blog', isAuthenticated, new AllUserBlogController().handle);
-router.put('/user/user_blog/update', isAuthenticated, upload_image.single('file'), new UserBlogUpdateDataController().handle);
+router.put('/user/user_blog/update', isAuthenticatedBlog, upload_image.single('file'), new UserBlogUpdateDataController().handle);
 router.get('/user/user_blog/download_excel_delete_users_blog', isAuthenticated, new GenerateExcelDeleteUserBlogController().handle);
 router.post('/user/user_blog/bulk_delete_users_blog', isAuthenticated, temp_file.single('file'), new BulkDeleteUsersBlogController().handle);
 router.delete('/user/user_blog/delete_user_blog', isAuthenticated, new UserBlogDeleteController().handle);

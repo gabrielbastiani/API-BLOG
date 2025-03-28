@@ -1,14 +1,16 @@
-import { NextFunction, Request, Response } from 'express'
-import { verify } from 'jsonwebtoken'
+import { NextFunction, Request, Response } from 'express';
+import { verify } from 'jsonwebtoken';
+import { PrismaClient } from '@prisma/client';
 
-interface Payload {
-  sub: string;
-}
+const prisma = new PrismaClient();
 
 declare global {
   namespace Express {
     interface Request {
-      user_id?: string;
+      user?: {
+        id: string;
+        role: string;
+      };
     }
   }
 }
@@ -24,20 +26,31 @@ export async function isAuthenticated(
     return res.status(401).end();
   }
 
-  const [, token] = authToken.split(" ")
+  const [, token] = authToken.split(" ");
 
   try {
     const { sub } = verify(
-      token,/* @ts-ignore */
-      process.env?.JWT_SECRET
-    ) as Payload;
+      token,
+      process.env.JWT_SECRET as string
+    ) as { sub: string };
 
-    req.user_id = sub;
+    const user = await prisma.user.findUnique({
+      where: { id: sub },
+      select: { id: true, role: true }
+    });
+
+    if (!user) {
+      return res.status(401).json({ error: 'User not found' });
+    }
+
+    req.user = {
+      id: user.id,
+      role: user.role
+    };
 
     return next();
 
   } catch (err) {
     return res.status(401).end();
   }
-
 }
