@@ -8,6 +8,10 @@ import { CreateConfigurationBlogController } from "./controllers/configuration_b
 import { GetConfigurationsBlogController } from "./controllers/configuration_blog/GetConfigurationsBlogController";
 import { UpdateConfigurationBlogController } from "./controllers/configuration_blog/UpdateConfigurationBlogController";
 import { DeleteFilesExcelController } from "./controllers/configuration_blog/DeleteFilesExcelController";
+import { DeleteOgImageController } from "./controllers/configuration_blog/seo/DeleteOgImageController";
+import { AddOgImagesController } from "./controllers/configuration_blog/seo/AddOgImagesController";
+import { AddTwitterImagesController } from "./controllers/configuration_blog/seo/AddTwitterImagesController";
+import { DeleteTwitterImageController } from "./controllers/configuration_blog/seo/DeleteTwitterImageController";
 
 // -- SEO --
 import { CreateSeoBlogController } from "./controllers/configuration_blog/seo/CreateSeoBlogController";
@@ -48,6 +52,7 @@ import { GenerateExcelCategoryController } from "./controllers/category/Generate
 import { BulkCategoryImportController } from "./controllers/category/BulkCategoryImportController";
 import { CategoriesBlogController } from "./controllers/category/CategoriesBlogController";
 import { PostsCategoryController } from "./controllers/category/PostsCategoryController";
+import { SitemapCategoryController } from "./controllers/category/SitemapCategoryController";
 
 // -- ROUTES POST --
 import { PostCreateController } from "./controllers/post/PostCreateController";
@@ -65,6 +70,8 @@ import { SearchPostBlogController } from "./controllers/post/SearchPostBlogContr
 import { PostContentController } from "./controllers/post/PostContentController";
 import { ReloadPostDataController } from "./controllers/post/ReloadPostDataController";
 import { PostSEOContentController } from "./controllers/post/PostSEOContentController";
+import { DataCategoryPostController } from "./controllers/post/DataCategoryPostController";
+import { SitemapController } from "./controllers/post/SitemapController";
 
 // -- ROUTES POST CATEGORY --
 import { PostCategoryCreateController } from "./controllers/post_category/PostCategoryCreateController";
@@ -159,11 +166,6 @@ import { IntervalBannerPageController } from "./controllers/marketing_publicatio
 import { ExistingSlidesBannerPageController } from "./controllers/marketing_publication/ExistingSlidesBannerPageController";
 import { ExistingSidebarBannerPageController } from "./controllers/marketing_publication/ExistingSidebarBannerPageController";
 import { DeleteIntervalBannerController } from "./controllers/marketing_publication/DeleteIntervalBannerController";
-import { DataCategoryPostController } from "./controllers/post/DataCategoryPostController";
-import { DeleteOgImageController } from "./controllers/configuration_blog/seo/DeleteOgImageController";
-import { AddOgImagesController } from "./controllers/configuration_blog/seo/AddOgImagesController";
-import { AddTwitterImagesController } from "./controllers/configuration_blog/seo/AddTwitterImagesController";
-import { DeleteTwitterImageController } from "./controllers/configuration_blog/seo/DeleteTwitterImageController";
 
 
 const router = Router();
@@ -229,6 +231,7 @@ router.get('/category/download_excel_delete_category', isAuthenticated, new Gene
 router.get('/categories/blog/posts', new CategoriesBlogController().handle);
 router.get('/category/on_posts', new PostsCategoryController().handle);
 router.get('/category/data_category', new DataCategoryPostController().handle);
+router.get('/posts_categories/sitemap', new SitemapCategoryController().handle);
 
 // -- ROUTES POST --
 router.post('/post/create_post', isAuthenticated, upload_image.single('file'), new PostCreateController().handle);
@@ -246,6 +249,7 @@ router.get('/post/articles/blog', new SearchPostBlogController().handle);
 router.get('/post/article/content', new PostContentController().handle);
 router.get('/post/reload_data', new ReloadPostDataController().handle);
 router.get('/post/articles/seo', new PostSEOContentController().handle);
+router.get('/article/sitemap', new SitemapController().handle);
 
 // -- ROUTES POST CATEGORY --
 router.post('/post_category/create_post_category', isAuthenticated, new PostCategoryCreateController().handle);
