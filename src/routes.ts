@@ -2,6 +2,7 @@ import { Router } from "express";
 import multer from 'multer';
 import uploadConfig from './config/multer';
 import { isAuthenticated } from "./middlewares/isAuthenticated";
+import { checkRole } from "./middlewares/checkRole";
 import { isAuthenticatedBlog } from "./middlewares/isAuthenticatedBlog";
 
 // -- ROUTES CONFIGURATION BLOG --
@@ -169,6 +170,7 @@ import { ExistingSidebarBannerPageController } from "./controllers/marketing_pub
 import { DeleteIntervalBannerController } from "./controllers/marketing_publication/DeleteIntervalBannerController";
 
 
+
 const router = Router();
 const upload_image = multer(uploadConfig.upload("./images"));
 const temp_file = multer(uploadConfig.upload("./temp_file"));
@@ -177,58 +179,58 @@ const temp_file = multer(uploadConfig.upload("./temp_file"));
 // -- ROUTES CONFIGURATION BLOG --
 router.post('/configuration_blog/create', upload_image.fields([{ name: 'logo', maxCount: 1 }, { name: 'favicon', maxCount: 1 }]), new CreateConfigurationBlogController().handle);
 router.get('/configuration_blog/get_configs', new GetConfigurationsBlogController().handle);
-router.put('/configuration_blog/update', isAuthenticated, upload_image.fields([{ name: 'logo', maxCount: 1 }, { name: 'favicon', maxCount: 1 }]), new UpdateConfigurationBlogController().handle);
-router.get('/configuration_blog/delete_all_files', isAuthenticated, new DeleteFilesExcelController().handle);
+router.put('/configuration_blog/update', isAuthenticated, checkRole(['SUPER_ADMIN']), upload_image.fields([{ name: 'logo', maxCount: 1 }, { name: 'favicon', maxCount: 1 }]), new UpdateConfigurationBlogController().handle);
+router.get('/configuration_blog/delete_all_files', isAuthenticated, checkRole(['SUPER_ADMIN']), new DeleteFilesExcelController().handle);
 
 // -- SEO --
-router.post('/seo/create', isAuthenticated, upload_image.fields([{ name: 'ogImages', maxCount: 5 }, { name: 'twitterImages', maxCount: 5 }]), new CreateSeoBlogController().handle);
-router.put('/seo/update_seo', isAuthenticated, upload_image.fields([{ name: 'ogImages', maxCount: 5 }, { name: 'twitterImages', maxCount: 5 }]), new UpdateSeoSettingsController().handle);
-router.get('/seo/get_seo', isAuthenticated, new GetSeoUniqueController().handle);
-router.delete('/seo/keyword', isAuthenticated, new DeleteKeywordController().handle);
-router.post('/seo/keyword', isAuthenticated, new AddKeywordController().handle);
-router.post('/seo/og-images', isAuthenticated, upload_image.array('images'), new AddOgImagesController().handle);
-router.delete('/seo/og-image', isAuthenticated, new DeleteOgImageController().handle);
-router.post('/seo/twitter-images', isAuthenticated, upload_image.array('images'), new AddTwitterImagesController().handle);
-router.delete('/seo/twitter-image', isAuthenticated, new DeleteTwitterImageController().handle);
+router.post('/seo/create', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), upload_image.fields([{ name: 'ogImages', maxCount: 5 }, { name: 'twitterImages', maxCount: 5 }]), new CreateSeoBlogController().handle);
+router.put('/seo/update_seo', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), upload_image.fields([{ name: 'ogImages', maxCount: 5 }, { name: 'twitterImages', maxCount: 5 }]), new UpdateSeoSettingsController().handle);
+router.get('/seo/get_seo', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new GetSeoUniqueController().handle);
+router.delete('/seo/keyword', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new DeleteKeywordController().handle);
+router.post('/seo/keyword', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new AddKeywordController().handle);
+router.post('/seo/og-images', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), upload_image.array('images'), new AddOgImagesController().handle);
+router.delete('/seo/og-image', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new DeleteOgImageController().handle);
+router.post('/seo/twitter-images', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), upload_image.array('images'), new AddTwitterImagesController().handle);
+router.delete('/seo/twitter-image', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new DeleteTwitterImageController().handle);
 router.get('/seo/get_page', new GetSeoBlogPageController().handle);
 router.get('/seo/all_seos', new AllSeoBlogPageController().handle);
 
 // -- ROUTES MEDIAS SOCIAL --
-router.post('/create/media_social', isAuthenticated, upload_image.single('file'), new CreateMediaSocialBlogController().handle);
-router.put('/update/media_social', isAuthenticated, upload_image.single('file'), new UpdateMediaSocialBlogController().handle);
+router.post('/create/media_social', isAuthenticated, checkRole(['SUPER_ADMIN']), upload_image.single('file'), new CreateMediaSocialBlogController().handle);
+router.put('/update/media_social', isAuthenticated, checkRole(['SUPER_ADMIN']), upload_image.single('file'), new UpdateMediaSocialBlogController().handle);
 router.get('/get/media_social', new MediasSocialsBlogController().handle);
-router.delete('/delete/media_social', isAuthenticated, new DeleteMediasSocialsBlogController().handle);
+router.delete('/delete/media_social', isAuthenticated, checkRole(['SUPER_ADMIN']), new DeleteMediasSocialsBlogController().handle);
 
 // -- ROUTES USERS --
 router.post('/user/create', upload_image.single('file'), new UserCreateController().handle);
-router.post("/user/bulk_users", isAuthenticated, temp_file.single("file"), new BulkUserImportController().handle);
-router.get('/user/download_excel', isAuthenticated, new GenerateExcelController().handle);
+router.post("/user/bulk_users", isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), temp_file.single("file"), new BulkUserImportController().handle);
+router.get('/user/download_excel', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new GenerateExcelController().handle);
 router.post('/user/session', new UserAuthController().handle);
 router.get('/user/me', isAuthenticated, new UserDetailController().handle);
 router.put('/user/update', isAuthenticated, upload_image.single('file'), new UserUpdateDataController().handle);
 router.put('/user/delete_photo', isAuthenticated, new UserPhotoDeleteController().handle);
 router.post('/user/email_recovery_password', new RequestPasswordUserRecoveryController().handle);
 router.put('/user/recovery_password', new PasswordRecoveryUserController().handle);
-router.delete('/user/delete_user', isAuthenticated, new UserDeleteController().handle);
-router.post('/user/bulk_delete_users', isAuthenticated, temp_file.single('file'), new BulkDeleteUsersController().handle);
+router.delete('/user/delete_user', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new UserDeleteController().handle);
+router.post('/user/bulk_delete_users', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), temp_file.single('file'), new BulkDeleteUsersController().handle);
 router.get('/user/download_excel_delete_users', isAuthenticated, new GenerateExcelDeleteUserController().handle);
-router.get('/user/all_users', isAuthenticated, new AllUserController().handle);
+router.get('/user/all_users', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new AllUserController().handle);
 router.get('/user/publicSuper_user', new SuperUserPublicController().handle);
 
 // -- ROUTES CATEGORY --
-router.post('/category/create', isAuthenticated, upload_image.single('file'), new CategoryCreateController().handle);
-router.put('/category/update', isAuthenticated, upload_image.single('file'), new CategoryUpdateDataController().handle);
-router.put('/category/updateOrder', isAuthenticated, new CategoryUpdateOrderController().handle);
-router.put('/category/moveUp', isAuthenticated, new MoveCategoryUpController().handle);
-router.put('/category/moveDown', isAuthenticated, new MoveCategoryDownController().handle);
-router.put('/category/delete_image', isAuthenticated, new CategoryDeleteImageController().handle);
-router.delete('/category/delete_category', isAuthenticated, new CategoryDeleteController().handle);
+router.post('/category/create', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), upload_image.single('file'), new CategoryCreateController().handle);
+router.put('/category/update', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), upload_image.single('file'), new CategoryUpdateDataController().handle);
+router.put('/category/updateOrder', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new CategoryUpdateOrderController().handle);
+router.put('/category/moveUp', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new MoveCategoryUpController().handle);
+router.put('/category/moveDown', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new MoveCategoryDownController().handle);
+router.put('/category/delete_image', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new CategoryDeleteImageController().handle);
+router.delete('/category/delete_category', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new CategoryDeleteController().handle);
 router.get('/category/cms', isAuthenticated, new CategoriesController().handle);
 router.get('/category/cms/all_categories', isAuthenticated, new AllCategoriesController().handle);
-router.get('/category/donwload_excel_categories', isAuthenticated, new GenerateExcelCategoryController().handle);
-router.post('/category/bulk_categories', isAuthenticated, temp_file.single("file"), new BulkCategoryImportController().handle);
-router.post('/category/bulk_delete_category', isAuthenticated, temp_file.single('file'), new BulkDeleteCategoryController().handle);
-router.get('/category/download_excel_delete_category', isAuthenticated, new GenerateExcelDeleteCategoryController().handle);
+router.get('/category/donwload_excel_categories', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new GenerateExcelCategoryController().handle);
+router.post('/category/bulk_categories', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), temp_file.single("file"), new BulkCategoryImportController().handle);
+router.post('/category/bulk_delete_category', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), temp_file.single('file'), new BulkDeleteCategoryController().handle);
+router.get('/category/download_excel_delete_category', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new GenerateExcelDeleteCategoryController().handle);
 router.get('/categories/blog/posts', new CategoriesBlogController().handle);
 router.get('/category/on_posts', new PostsCategoryController().handle);
 router.get('/category/data_category', new DataCategoryPostController().handle);
@@ -237,12 +239,12 @@ router.get('/posts_categories/sitemap', new SitemapCategoryController().handle);
 // -- ROUTES POST --
 router.post('/post/create_post', isAuthenticated, upload_image.single('file'), new PostCreateController().handle);
 router.put('/post/update', isAuthenticated, upload_image.single('file'), new PostUpdateDataController().handle);
-router.delete('/post/delete_post', isAuthenticated, new PostDeleteController().handle);
+router.delete('/post/delete_post', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new PostDeleteController().handle);
 router.get('/post/cms', isAuthenticated, new AllPostController().handle);
-router.get('/post/download_excel_delete_post', isAuthenticated, new GenerateExcelDeletePostsController().handle);
-router.post('/post/bulk_delete_posts', isAuthenticated, temp_file.single('file'), new BulkDeletePostsController().handle);
+router.get('/post/download_excel_delete_post', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new GenerateExcelDeletePostsController().handle);
+router.post('/post/bulk_delete_posts', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), temp_file.single('file'), new BulkDeletePostsController().handle);
 router.get('/post/donwload_excel_posts', isAuthenticated, new GenerateExcelPostsController().handle);
-router.post('/post/bulk_posts', isAuthenticated, temp_file.single("file"), new BulkPostsImportController().handle);
+router.post('/post/bulk_posts', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), temp_file.single("file"), new BulkPostsImportController().handle);
 router.patch('/post/likes', new PostLikeController().handle);
 router.patch("/post/:post_id/views", new UpdateViewsController().handle);
 router.get('/post/blog/search_nav_bar', new NavBarSearchBlogPostController().handle);
@@ -253,59 +255,59 @@ router.get('/post/articles/seo', new PostSEOContentController().handle);
 router.get('/article/sitemap', new SitemapController().handle);
 
 // -- ROUTES POST CATEGORY --
-router.post('/post_category/create_post_category', isAuthenticated, new PostCategoryCreateController().handle);
-router.put('/post_category/update', isAuthenticated, new PostCategoryUpdateDataController().handle);
-router.delete('/post_category/delete', isAuthenticated, new PostCategoryDeleteController().handle);
+router.post('/post_category/create_post_category', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new PostCategoryCreateController().handle);
+router.put('/post_category/update', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new PostCategoryUpdateDataController().handle);
+router.delete('/post_category/delete', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new PostCategoryDeleteController().handle);
 router.get('/post_category/get_post_category', isAuthenticated, new PostCategoryFindController().handle);
 
 // -- ROUTES COMMENT --
-router.post('/comment/create_comment', isAuthenticated, new CommentCreateController().handle);
-router.put('/comment/update_status', isAuthenticated, new CommentStatusController().handle);
+router.post('/comment/create_comment', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new CommentCreateController().handle);
+router.put('/comment/update_status', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new CommentStatusController().handle);
 router.patch('/comment/likes', new CommentLikeController().handle);
-router.put('/comment/delete', isAuthenticated, new CommentDeleteController().handle);
-router.get('/comment/cms/get_comments', isAuthenticated, new AllCommentController().handle);
+router.put('/comment/delete', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new CommentDeleteController().handle);
+router.get('/comment/cms/get_comments', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new AllCommentController().handle);
 router.get('/comment/get_comments/post', new CommentAllPostController().handle);
 
 // -- ROUTES FORM CONTACT --
 router.post('/form_contact/create_form_contact', new FormContactCreateController().handle);
-router.delete('/form_contact/delete_form_contatct', isAuthenticated, new FormContactDeleteController().handle);
-router.get('/contacts_form/all_contacts', isAuthenticated, new FormContactFindController().handle);
-router.get('/contacts_form/contact', isAuthenticated, new ContactController().handle);
+router.delete('/form_contact/delete_form_contatct', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new FormContactDeleteController().handle);
+router.get('/contacts_form/all_contacts', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new FormContactFindController().handle);
+router.get('/contacts_form/contact', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new ContactController().handle);
 
 // -- ROUTES NEWSLETTER --
 router.post('/newsletter/create_newsletter', new NewsletterCreateController().handle);
-router.delete('/newsletter/delete_newsletter', isAuthenticated, new NewsletterDeleteController().handle);
-router.get('/newsletter/get_newsletters', isAuthenticated, new NewsletterFindController().handle);
+router.delete('/newsletter/delete_newsletter', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new NewsletterDeleteController().handle);
+router.get('/newsletter/get_newsletters', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new NewsletterFindController().handle);
 
 // -- ROUTES EXPORTDATA --
-router.post('/export_data', isAuthenticated, new ExportDataController().handle);
+router.post('/export_data', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new ExportDataController().handle);
 
 // -- ROUTES NOTIFICATION --
 router.get('/user/notifications', isAuthenticated, new FindNotificationController().handle);
 router.put('/notifications/mark-read', isAuthenticated, new MarkNotificationReadController().handle);
 router.put('/notifications/mark-all-read', isAuthenticated, new MarkAllNotificationsAsReadController().handle);
 router.get('/notifications_user/central_notifications', isAuthenticated, new FindUsersNotificationController().handle);
-router.delete('/notifications_user/delete_notification', isAuthenticated, new NotificationDeleteController().handle);
+router.delete('/notifications_user/delete_notification', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new NotificationDeleteController().handle);
 
 // -- ROUTES TAG --
-router.post('/tag/create_tag', isAuthenticated, new CreateTagController().handle);
-router.get('/tag/donwload_excel_tag', isAuthenticated, new GenerateExcelTagController().handle);
-router.post('/tag/bulk_tags', isAuthenticated, temp_file.single("file"), new BulkTagsImportController().handle);
-router.post('/tag/bulk_delete_tags', isAuthenticated, temp_file.single('file'), new BulkDeleteTagsController().handle);
-router.get('/tag/download_excel_delete_tags', isAuthenticated, new GenerateExcelDeleteTagController().handle);
+router.post('/tag/create_tag', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new CreateTagController().handle);
+router.get('/tag/donwload_excel_tag', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new GenerateExcelTagController().handle);
+router.post('/tag/bulk_tags', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), temp_file.single("file"), new BulkTagsImportController().handle);
+router.post('/tag/bulk_delete_tags', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), temp_file.single('file'), new BulkDeleteTagsController().handle);
+router.get('/tag/download_excel_delete_tags', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new GenerateExcelDeleteTagController().handle);
 router.get('/tag/all_tags', isAuthenticated, new AllTagController().handle);
-router.delete('/tag/delete_tag', isAuthenticated, new TagDeleteController().handle);
-router.put('/tag/update', isAuthenticated, new UpdateTagController().handle);
+router.delete('/tag/delete_tag', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new TagDeleteController().handle);
+router.put('/tag/update', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new UpdateTagController().handle);
 
 // -- ROUTES BLOG --
 router.post('/user/user_blog/create', upload_image.single('file'), new UserBlogCreateController().handle);
 router.post('/user/user_blog/session', new UserBlogAuthController().handle);
 router.get('/user/user_blog/me', isAuthenticatedBlog, new UserBlogDetailController().handle);
-router.get('/user/user_blog/all_users_blog', isAuthenticated, new AllUserBlogController().handle);
+router.get('/user/user_blog/all_users_blog', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new AllUserBlogController().handle);
 router.put('/user/user_blog/update', isAuthenticatedBlog, upload_image.single('file'), new UserBlogUpdateDataController().handle);
-router.get('/user/user_blog/download_excel_delete_users_blog', isAuthenticated, new GenerateExcelDeleteUserBlogController().handle);
-router.post('/user/user_blog/bulk_delete_users_blog', isAuthenticated, temp_file.single('file'), new BulkDeleteUsersBlogController().handle);
-router.delete('/user/user_blog/delete_user_blog', isAuthenticated, new UserBlogDeleteController().handle);
+router.get('/user/user_blog/download_excel_delete_users_blog', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new GenerateExcelDeleteUserBlogController().handle);
+router.post('/user/user_blog/bulk_delete_users_blog', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), temp_file.single('file'), new BulkDeleteUsersBlogController().handle);
+router.delete('/user/user_blog/delete_user_blog', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new UserBlogDeleteController().handle);
 router.post('/user/user_blog/email_recovery_password', new RequestPasswordUserBlogRecoveryController().handle);
 router.put('/user/user_blog/recovery_password_user_blog', new PasswordRecoveryUserBlogController().handle);
 
@@ -321,23 +323,23 @@ router.get('/dashboard/posts/views-by-date', isAuthenticated, new GetPostViewsBy
 router.get('/dashboard/publication_marketing/views-by-date', isAuthenticated, new GetMarketingClicksByDateController().handle);
 
 // -- ROUTES MARKETING --
-router.post('/marketing_publication/create', isAuthenticated, upload_image.single('file'), new CreateMarketingPublicationController().handle);
+router.post('/marketing_publication/create', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), upload_image.single('file'), new CreateMarketingPublicationController().handle);
 router.patch('/marketing_publication/:marketingPublication_id/clicks', new UpdateViewsPuplicationsController().handle);
-router.get('/marketing_publication/all_publications', isAuthenticated, new AllMarketingPublicationController().handle);
-router.put('/marketing_publication/delete_image', isAuthenticated, new CategoryDeleteImageController().handle);
-router.put('/marketing_publication/update', isAuthenticated, upload_image.single('file'), new MarketingUpdateDataController().handle);
-router.get('/marketing_publication/download_excel_delete_marketing', isAuthenticated, new GenerateExcelDeletePublicationController().handle);
-router.post('/marketing_publication/bulk_delete_publications', isAuthenticated, temp_file.single('file'), new BulkDeleteMarketingPublicationController().handle);
-router.delete('/marketing_publication/delete_publications', isAuthenticated, new MarketingPublicationDeleteDeleteController().handle);
+router.get('/marketing_publication/all_publications', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new AllMarketingPublicationController().handle);
+router.put('/marketing_publication/delete_image', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new CategoryDeleteImageController().handle);
+router.put('/marketing_publication/update', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), upload_image.single('file'), new MarketingUpdateDataController().handle);
+router.get('/marketing_publication/download_excel_delete_marketing', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new GenerateExcelDeletePublicationController().handle);
+router.post('/marketing_publication/bulk_delete_publications', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), temp_file.single('file'), new BulkDeleteMarketingPublicationController().handle);
+router.delete('/marketing_publication/delete_publications', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new MarketingPublicationDeleteDeleteController().handle);
 router.get('/marketing_publication/blog_publications/slides', new SlideBlogMarketingPublicationController().handle);
 router.get('/marketing_publication/blog_publications/popup', new PopupBlogMarketingPublicationController().handle);
-router.post('/marketing_publication/interval_banner', isAuthenticated, new IntervalBannerController().handle);
-router.get('/marketing_publication/interval_banner/existing_interval', isAuthenticated, new ExistingIntervalBannerController().handle);
-router.put('/marketing_publication/interval_banner/update_data', isAuthenticated, new IntervalUpdateDataController().handle);
+router.post('/marketing_publication/interval_banner', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new IntervalBannerController().handle);
+router.get('/marketing_publication/interval_banner/existing_interval', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new ExistingIntervalBannerController().handle);
+router.put('/marketing_publication/interval_banner/update_data', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new IntervalUpdateDataController().handle);
 router.get('/marketing_publication/interval_banner/page_banner', new IntervalBannerPageController().handle);
 router.get('/marketing_publication/existing_banner', new ExistingSlidesBannerPageController().handle);
 router.get('/marketing_publication/existing_sidebar', new ExistingSidebarBannerPageController().handle);
-router.delete('/marketing_publication/delete', isAuthenticated, new DeleteIntervalBannerController().handle);
+router.delete('/marketing_publication/delete', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new DeleteIntervalBannerController().handle);
 
 
 export { router }
