@@ -120,3 +120,6 @@ out
 
 #enverioment
 .env
+
+/images/
+/temp_file/
