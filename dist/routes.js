@@ -158,6 +158,7 @@ const IntervalBannerPageController_1 = require("./controllers/marketing_publicat
 const ExistingSlidesBannerPageController_1 = require("./controllers/marketing_publication/ExistingSlidesBannerPageController");
 const ExistingSidebarBannerPageController_1 = require("./controllers/marketing_publication/ExistingSidebarBannerPageController");
 const DeleteIntervalBannerController_1 = require("./controllers/marketing_publication/DeleteIntervalBannerController");
+const CacheController_1 = require("./controllers/configuration_blog/cache_images/CacheController");
 const router = (0, express_1.Router)();
 exports.router = router;
 const upload_image = (0, multer_1.default)(multer_2.default.upload("./images"));
@@ -167,6 +168,7 @@ router.post('/configuration_blog/create', upload_image.fields([{ name: 'logo', m
 router.get('/configuration_blog/get_configs', new GetConfigurationsBlogController_1.GetConfigurationsBlogController().handle);
 router.put('/configuration_blog/update', isAuthenticated_1.isAuthenticated, (0, checkRole_1.checkRole)(['SUPER_ADMIN']), upload_image.fields([{ name: 'logo', maxCount: 1 }, { name: 'favicon', maxCount: 1 }]), new UpdateConfigurationBlogController_1.UpdateConfigurationBlogController().handle);
 router.get('/configuration_blog/delete_all_files', isAuthenticated_1.isAuthenticated, (0, checkRole_1.checkRole)(['SUPER_ADMIN']), new DeleteFilesExcelController_1.DeleteFilesExcelController().handle);
+router.post('/cache/purge', new CacheController_1.CacheController().handle);
 // -- SEO --
 router.post('/seo/create', isAuthenticated_1.isAuthenticated, (0, checkRole_1.checkRole)(['ADMIN', 'SUPER_ADMIN']), upload_image.fields([{ name: 'ogImages', maxCount: 5 }, { name: 'twitterImages', maxCount: 5 }]), new CreateSeoBlogController_1.CreateSeoBlogController().handle);
 router.put('/seo/update_seo', isAuthenticated_1.isAuthenticated, (0, checkRole_1.checkRole)(['ADMIN', 'SUPER_ADMIN']), upload_image.fields([{ name: 'ogImages', maxCount: 5 }, { name: 'twitterImages', maxCount: 5 }]), new UpdateSeoSettingsController_1.UpdateSeoSettingsController().handle);
