@@ -168,7 +168,7 @@ import { IntervalBannerPageController } from "./controllers/marketing_publicatio
 import { ExistingSlidesBannerPageController } from "./controllers/marketing_publication/ExistingSlidesBannerPageController";
 import { ExistingSidebarBannerPageController } from "./controllers/marketing_publication/ExistingSidebarBannerPageController";
 import { DeleteIntervalBannerController } from "./controllers/marketing_publication/DeleteIntervalBannerController";
-
+import { CacheController } from "./controllers/configuration_blog/cache_images/CacheController";
 
 
 const router = Router();
@@ -181,6 +181,7 @@ router.post('/configuration_blog/create', upload_image.fields([{ name: 'logo', m
 router.get('/configuration_blog/get_configs', new GetConfigurationsBlogController().handle);
 router.put('/configuration_blog/update', isAuthenticated, checkRole(['SUPER_ADMIN']), upload_image.fields([{ name: 'logo', maxCount: 1 }, { name: 'favicon', maxCount: 1 }]), new UpdateConfigurationBlogController().handle);
 router.get('/configuration_blog/delete_all_files', isAuthenticated, checkRole(['SUPER_ADMIN']), new DeleteFilesExcelController().handle);
+router.post('/cache/purge', new CacheController().handle);
 
 // -- SEO --
 router.post('/seo/create', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), upload_image.fields([{ name: 'ogImages', maxCount: 5 }, { name: 'twitterImages', maxCount: 5 }]), new CreateSeoBlogController().handle);
