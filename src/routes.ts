@@ -30,6 +30,10 @@ import { UpdateMediaSocialBlogController } from "./controllers/configuration_blo
 import { MediasSocialsBlogController } from "./controllers/configuration_blog/media_social/MediasSocialsBlogController";
 import { DeleteMediasSocialsBlogController } from "./controllers/configuration_blog/media_social/DeleteMediasSocialsBlogController";
 
+// -- ROUTES THEME SETTINGS --
+import { ThemeController } from "./controllers/configuration_blog/theme_setting/ThemeController";
+import { body } from "express-validator/lib/middlewares/validation-chain-builders";
+
 // -- ROUTES USERS --
 import { UserCreateController } from "./controllers/user/UserCreateController";
 import { BulkUserImportController } from "./controllers/user/BulkUserImportController";
@@ -168,12 +172,12 @@ import { IntervalBannerPageController } from "./controllers/marketing_publicatio
 import { ExistingSlidesBannerPageController } from "./controllers/marketing_publication/ExistingSlidesBannerPageController";
 import { ExistingSidebarBannerPageController } from "./controllers/marketing_publication/ExistingSidebarBannerPageController";
 import { DeleteIntervalBannerController } from "./controllers/marketing_publication/DeleteIntervalBannerController";
-import { CacheController } from "./controllers/configuration_blog/cache_images/CacheController";
 
 
 const router = Router();
 const upload_image = multer(uploadConfig.upload("./images"));
 const temp_file = multer(uploadConfig.upload("./temp_file"));
+const themeController = new ThemeController();
 
 
 // -- ROUTES CONFIGURATION BLOG --
@@ -181,7 +185,6 @@ router.post('/configuration_blog/create', upload_image.fields([{ name: 'logo', m
 router.get('/configuration_blog/get_configs', new GetConfigurationsBlogController().handle);
 router.put('/configuration_blog/update', isAuthenticated, checkRole(['SUPER_ADMIN']), upload_image.fields([{ name: 'logo', maxCount: 1 }, { name: 'favicon', maxCount: 1 }]), new UpdateConfigurationBlogController().handle);
 router.get('/configuration_blog/delete_all_files', isAuthenticated, checkRole(['SUPER_ADMIN']), new DeleteFilesExcelController().handle);
-router.post('/cache/purge', new CacheController().handle);
 
 // -- SEO --
 router.post('/seo/create', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), upload_image.fields([{ name: 'ogImages', maxCount: 5 }, { name: 'twitterImages', maxCount: 5 }]), new CreateSeoBlogController().handle);
@@ -201,6 +204,26 @@ router.post('/create/media_social', isAuthenticated, checkRole(['SUPER_ADMIN']),
 router.put('/update/media_social', isAuthenticated, checkRole(['SUPER_ADMIN']), upload_image.single('file'), new UpdateMediaSocialBlogController().handle);
 router.get('/get/media_social', new MediasSocialsBlogController().handle);
 router.delete('/delete/media_social', isAuthenticated, checkRole(['SUPER_ADMIN']), new DeleteMediasSocialsBlogController().handle);
+
+// -- ROUTES THEME SETTINGS --
+router.get('/theme', themeController.getTheme);
+router.put(
+    '/theme',
+    isAuthenticated, checkRole(['SUPER_ADMIN']),
+    [
+        body('primaryColor').isHexColor(),
+        body('secondaryColor').isHexColor(),
+        body('thirdColor').isHexColor(),
+        body('fourthColor').isHexColor(),
+        body('fifthColor').isHexColor(),
+        body('sixthColor').isHexColor(),
+        body('primarybackgroundColor').isHexColor(),
+        body('secondarybackgroundColor').isHexColor(),
+        body('thirdbackgroundColor').isHexColor(),
+        body('fourthbackgroundColor').isHexColor()
+    ],
+    themeController.updateTheme
+);
 
 // -- ROUTES USERS --
 router.post('/user/create', upload_image.single('file'), new UserCreateController().handle);
