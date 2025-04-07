@@ -1,35 +1,44 @@
+import { JsonObject } from "@prisma/client/runtime/library";
 import prismaClient from "../../../prisma";
-
-interface ThemeRequest {
-    primaryColor?: string;
-    secondaryColor?: string;
-    thirdColor?: string;
-    fourthColor?: string;
-    fifthColor?: string;
-    sixthColor?: string;
-    primarybackgroundColor?: string;
-    secondarybackgroundColor?: string;
-    thirdbackgroundColor?: string;
-    fourthbackgroundColor?: string;
-}
 
 class ThemeService {
     async getThemeSettings() {
-        return await prismaClient.themeSettings.findFirst();
+        const settings = await prismaClient.themeSettings.findFirst();
+        return settings?.colors || {};
     }
 
-    async updateThemeSettings(themeData: ThemeRequest) {
-        const existingSettings = await prismaClient.themeSettings.findFirst();
+    async updateThemeSettings(colors: Record<string, string>) {
+        const existing = await prismaClient.themeSettings.findFirst();
 
-        if (existingSettings) {
+        if (existing) {
             return await prismaClient.themeSettings.update({
-                where: { id: existingSettings.id },
-                data: themeData
+                where: { id: existing.id },
+                data: { colors }
             });
         }
 
         return await prismaClient.themeSettings.create({
-            data: themeData
+            data: { colors }
+        });
+    }
+
+    async deleteColor(colorName: string) {
+        const existingSettings = await prismaClient.themeSettings.findFirst();
+        
+        if (!existingSettings) {
+            throw new Error('Configurações de tema não encontradas');
+        }
+
+        const colors = typeof existingSettings.colors === 'object' 
+            ? existingSettings.colors as JsonObject
+            : {};
+
+        const updatedColors = { ...colors };
+        delete updatedColors[colorName];
+
+        return await prismaClient.themeSettings.update({
+            where: { id: existingSettings.id },
+            data: { colors: updatedColors }
         });
     }
 }

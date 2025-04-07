@@ -6,10 +6,10 @@ class ThemeController {
     async getTheme(req: Request, res: Response) {
         try {
             const themeService = new ThemeService();
-            const themeSettings = await themeService.getThemeSettings();
-            return res.json(themeSettings);
+            const colors = await themeService.getThemeSettings();
+            return res.json({ colors });
         } catch (error) {
-            return res.status(500).json({ error: 'Internal server error' });
+            return res.status(500).json({ error: 'Erro interno' });
         }
     }
 
@@ -20,12 +20,31 @@ class ThemeController {
         }
 
         try {
-            const themeData = req.body;
+            const { colors } = req.body;
             const themeService = new ThemeService();
-            const updatedTheme = await themeService.updateThemeSettings(themeData);
-            return res.json(updatedTheme);
+            await themeService.updateThemeSettings(colors);
+            return res.json({ colors });
         } catch (error) {
-            return res.status(500).json({ error: 'Internal server error' });
+            return res.status(500).json({ error: 'Erro ao atualizar' });
+        }
+    }
+
+    async deleteColor(req: Request, res: Response) {
+        try {
+            const { colorName } = req.params;
+            const themeService = new ThemeService();
+            const result = await themeService.deleteColor(colorName);
+            
+            return res.json({
+                success: true,
+                colors: result.colors
+            });
+            
+        } catch (error) {
+            return res.status(500).json({
+                success: false,
+                error: error
+            });
         }
     }
 }

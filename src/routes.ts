@@ -177,7 +177,7 @@ import { DeleteIntervalBannerController } from "./controllers/marketing_publicat
 const router = Router();
 const upload_image = multer(uploadConfig.upload("./images"));
 const temp_file = multer(uploadConfig.upload("./temp_file"));
-const themeController = new ThemeController();
+const controller = new ThemeController();
 
 
 // -- ROUTES CONFIGURATION BLOG --
@@ -206,23 +206,25 @@ router.get('/get/media_social', new MediasSocialsBlogController().handle);
 router.delete('/delete/media_social', isAuthenticated, checkRole(['SUPER_ADMIN']), new DeleteMediasSocialsBlogController().handle);
 
 // -- ROUTES THEME SETTINGS --
-router.get('/theme', themeController.getTheme);
+router.get('/theme', controller.getTheme);
+router.delete('/theme/:colorName',isAuthenticated, checkRole(['SUPER_ADMIN']), controller.deleteColor);
 router.put(
     '/theme',
-    isAuthenticated, checkRole(['SUPER_ADMIN']),
+    isAuthenticated,
+    checkRole(['SUPER_ADMIN']),
     [
-        body('primaryColor').isHexColor(),
-        body('secondaryColor').isHexColor(),
-        body('thirdColor').isHexColor(),
-        body('fourthColor').isHexColor(),
-        body('fifthColor').isHexColor(),
-        body('sixthColor').isHexColor(),
-        body('primarybackgroundColor').isHexColor(),
-        body('secondarybackgroundColor').isHexColor(),
-        body('thirdbackgroundColor').isHexColor(),
-        body('fourthbackgroundColor').isHexColor()
+        body('colors')
+            .isObject()
+            .custom(value => {
+                for (const color of Object.values(value)) {
+                    if (!/^#([0-9A-F]{3}){1,2}$/i.test(color as string)) {
+                        throw new Error('Cores devem ser hexadecimais');
+                    }
+                }
+                return true;
+            })
     ],
-    themeController.updateTheme
+    controller.updateTheme
 );
 
 // -- ROUTES USERS --

@@ -1,1 +1,0 @@
-{"version":3,"file":"AllSeoBlogPageService.js","sourceRoot":"","sources":["../../../../src/services/configuration_blog/seo/AllSeoBlogPageService.ts"],"names":[],"mappings":";;;;;;AAAA,6DAA2C;AAE3C,MAAM,qBAAqB;IACvB,KAAK,CAAC,OAAO;QACT,MAAM,OAAO,GAAG,MAAM,gBAAY,CAAC,WAAW,CAAC,QAAQ,EAAE,CAAC;QAE1D,OAAO,OAAO,CAAC;IAEnB,CAAC;CACJ;AAEQ,sDAAqB"}

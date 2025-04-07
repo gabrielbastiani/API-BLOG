@@ -130,17 +130,8 @@ model SocialMediasBlog {
 }
 
 model ThemeSettings {
-  id                       String @id @default(uuid())
-  primaryColor             String @default("#ffffff")
-  secondaryColor           String @default("#000000")
-  thirdColor               String @default("#ef4444")
-  fourthColor              String @default("#797a7b")
-  fifthColor               String @default("#1f2937")
-  sixthColor               String @default("#f97316")
-  primarybackgroundColor   String @default("#000000")
-  secondarybackgroundColor String @default("#f9fafb")
-  thirdbackgroundColor     String @default("#f3f4f6")
-  fourthbackgroundColor    String @default("#6b7280")
+  id     String @id @default(uuid())
+  colors Json
 
   created_at DateTime @default(now()) @db.Timestamptz(3)
   updated_at DateTime @updatedAt
