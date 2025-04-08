@@ -16,20 +16,17 @@ class ThemeService {
                 data: { colors }
             });
         }
-
-        return await prismaClient.themeSettings.create({
-            data: { colors }
-        });
+    
     }
 
     async deleteColor(colorName: string) {
         const existingSettings = await prismaClient.themeSettings.findFirst();
-        
+
         if (!existingSettings) {
             throw new Error('Configurações de tema não encontradas');
         }
 
-        const colors = typeof existingSettings.colors === 'object' 
+        const colors = typeof existingSettings.colors === 'object'
             ? existingSettings.colors as JsonObject
             : {};
 
