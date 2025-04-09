@@ -1,4 +1,4 @@
-import prismaClient from "../../../prisma"; 
+import prismaClient from "../../../prisma";
 import nodemailer from "nodemailer";
 require('dotenv/config');
 import ejs from 'ejs';
@@ -33,9 +33,13 @@ class RequestPasswordUserBlogRecoveryService {
     const transporter = nodemailer.createTransport({
       host: process.env.HOST_SMTP,
       port: 465,
+      secure: true,
       auth: {
         user: process.env.USER_SMTP,
         pass: process.env.PASS_SMTP
+      },
+      tls: {
+        rejectUnauthorized: false
       }
     });
 

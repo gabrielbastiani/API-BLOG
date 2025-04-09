@@ -286,7 +286,7 @@ router.delete('/post_category/delete', isAuthenticated, checkRole(['ADMIN', 'SUP
 router.get('/post_category/get_post_category', isAuthenticated, new PostCategoryFindController().handle);
 
 // -- ROUTES COMMENT --
-router.post('/comment/create_comment', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new CommentCreateController().handle);
+router.post('/comment/create_comment', isAuthenticatedBlog, new CommentCreateController().handle);
 router.put('/comment/update_status', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new CommentStatusController().handle);
 router.patch('/comment/likes', new CommentLikeController().handle);
 router.put('/comment/delete', isAuthenticated, checkRole(['ADMIN', 'SUPER_ADMIN']), new CommentDeleteController().handle);

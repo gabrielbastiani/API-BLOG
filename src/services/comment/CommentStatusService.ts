@@ -27,9 +27,13 @@ class CommentStatusService {
         const transporter = nodemailer.createTransport({
             host: process.env.HOST_SMTP,
             port: 465,
+            secure: true,
             auth: {
                 user: process.env.USER_SMTP,
                 pass: process.env.PASS_SMTP
+            },
+            tls: {
+                rejectUnauthorized: false
             }
         });
 
