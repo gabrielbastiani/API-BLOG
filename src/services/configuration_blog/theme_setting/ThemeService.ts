@@ -1,4 +1,3 @@
-import { JsonObject } from "@prisma/client/runtime/library";
 import prismaClient from "../../../prisma";
 
 class ThemeService {
@@ -19,25 +18,6 @@ class ThemeService {
     
     }
 
-    async deleteColor(colorName: string) {
-        const existingSettings = await prismaClient.themeSettings.findFirst();
-
-        if (!existingSettings) {
-            throw new Error('Configurações de tema não encontradas');
-        }
-
-        const colors = typeof existingSettings.colors === 'object'
-            ? existingSettings.colors as JsonObject
-            : {};
-
-        const updatedColors = { ...colors };
-        delete updatedColors[colorName];
-
-        return await prismaClient.themeSettings.update({
-            where: { id: existingSettings.id },
-            data: { colors: updatedColors }
-        });
-    }
 }
 
 export { ThemeService };

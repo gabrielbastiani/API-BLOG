@@ -207,7 +207,6 @@ router.delete('/delete/media_social', isAuthenticated, checkRole(['SUPER_ADMIN']
 
 // -- ROUTES THEME SETTINGS --
 router.get('/theme', controller.getTheme);
-router.delete('/theme/:colorName',isAuthenticated, checkRole(['SUPER_ADMIN']), controller.deleteColor);
 router.put(
     '/theme',
     isAuthenticated,

@@ -29,24 +29,6 @@ class ThemeController {
         }
     }
 
-    async deleteColor(req: Request, res: Response) {
-        try {
-            const { colorName } = req.params;
-            const themeService = new ThemeService();
-            const result = await themeService.deleteColor(colorName);
-            
-            return res.json({
-                success: true,
-                colors: result.colors
-            });
-            
-        } catch (error) {
-            return res.status(500).json({
-                success: false,
-                error: error
-            });
-        }
-    }
 }
 
 export { ThemeController };
